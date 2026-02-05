@@ -93,7 +93,7 @@ const app = {
     portfolio: [
         {
             title: 'Бот для ресторана',
-            image: 'restaurant',
+            icon: 'restaurant',
             category: 'Бронирование',
             metrics: {
                 orders: '500+/день',
@@ -105,7 +105,7 @@ const app = {
         },
         {
             title: 'Интернет-магазин одежды',
-            image: 'store',
+            icon: 'store',
             category: 'E-commerce',
             metrics: {
                 revenue: '₽2.4M/мес',
@@ -117,7 +117,7 @@ const app = {
         },
         {
             title: 'Фитнес-клуб Premium',
-            image: 'fitness_center',
+            icon: 'fitness_center',
             category: 'Услуги',
             metrics: {
                 clients: '800+',
@@ -129,7 +129,7 @@ const app = {
         },
         {
             title: 'Автосервис 24/7',
-            image: 'directions_car',
+            icon: 'directions_car',
             category: 'Бронирование',
             metrics: {
                 bookings: '350/мес',
@@ -154,14 +154,14 @@ const app = {
         if (!grid) return;
         
         const topFeatures = this.features.slice(0, 6);
-        grid.innerHTML = topFeatures.map(feature => `
-            <div class="card">
+        grid.innerHTML = topFeatures.map((feature, index) => `
+            <div class="card" style="animation-delay: ${index * 0.1}s">
                 <div class="card-icon">
                     <span class="material-icons-round">${feature.icon}</span>
                 </div>
                 <h3 class="card-title">${feature.title}</h3>
                 <p class="card-description">${feature.description}</p>
-                <div style="margin-top: 16px; color: var(--primary); font-weight: 600;">
+                <div style="margin-top: 20px; color: var(--primary); font-weight: 700; font-size: 18px;">
                     от ${feature.price.toLocaleString('ru')} ₽
                 </div>
             </div>
@@ -174,17 +174,17 @@ const app = {
         
         container.innerHTML = `
             <div style="max-width: 900px; margin: 0 auto;">
-                <div class="card" style="padding: 40px;">
-                    <div id="calculator-features" style="margin-bottom: 40px;">
+                <div class="card" style="padding: 48px;">
+                    <div id="calculator-features" style="margin-bottom: 48px;">
                         <div style="display: grid; gap: 16px;">
                             ${this.features.map(feature => `
                                 <label class="feature-option" data-feature-id="${feature.id}">
                                     <input type="checkbox" class="feature-checkbox" value="${feature.id}">
                                     <div class="feature-content">
                                         <div class="feature-header">
-                                            <span class="feature-icon">
+                                            <div class="feature-icon-small">
                                                 <span class="material-icons-round">${feature.icon}</span>
-                                            </span>
+                                            </div>
                                             <div class="feature-info">
                                                 <div class="feature-title">${feature.title}</div>
                                                 <div class="feature-description">${feature.description}</div>
@@ -210,52 +210,52 @@ const app = {
                             <span class="summary-label">Срок разработки:</span>
                             <span class="summary-value" id="development-time">7-10 дней</span>
                         </div>
-                        <button class="btn btn-primary" id="order-btn" style="width: 100%; margin-top: 24px; padding: 16px;" disabled>
+                        <button class="btn btn-primary" id="order-btn" style="width: 100%; margin-top: 32px; padding: 18px; font-size: 16px;" disabled>
                             Оставить заявку
                         </button>
                     </div>
                 </div>
                 
-                <div class="card" id="order-form" style="display: none; margin-top: 24px; padding: 40px;">
-                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Оформление заявки</h3>
+                <div class="card" id="order-form" style="display: none; margin-top: 24px; padding: 48px;">
+                    <h3 style="font-size: 28px; font-weight: 700; margin-bottom: 32px;">Оформление заявки</h3>
                     <form id="request-form">
-                        <div style="display: grid; gap: 20px;">
+                        <div style="display: grid; gap: 24px;">
                             <div>
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Ваше имя *</label>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px;">Ваше имя</label>
                                 <input type="text" name="name" required 
-                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
-                                    onfocus="this.style.borderColor='var(--primary)'"
-                                    onblur="this.style.borderColor='var(--border)'">
+                                    style="width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 136, 204, 0.15); border-radius: 14px; font-size: 16px; transition: all 0.3s; background: rgba(255, 255, 255, 0.8);"
+                                    onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='rgba(0, 136, 204, 0.15)'; this.style.background='rgba(255, 255, 255, 0.8)'">
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email *</label>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px;">Email</label>
                                 <input type="email" name="email" required 
-                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
-                                    onfocus="this.style.borderColor='var(--primary)'"
-                                    onblur="this.style.borderColor='var(--border)'">
+                                    style="width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 136, 204, 0.15); border-radius: 14px; font-size: 16px; transition: all 0.3s; background: rgba(255, 255, 255, 0.8);"
+                                    onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='rgba(0, 136, 204, 0.15)'; this.style.background='rgba(255, 255, 255, 0.8)'">
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Telegram</label>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px;">Telegram</label>
                                 <input type="text" name="telegram" placeholder="@username" 
-                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
-                                    onfocus="this.style.borderColor='var(--primary)'"
-                                    onblur="this.style.borderColor='var(--border)'">
+                                    style="width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 136, 204, 0.15); border-radius: 14px; font-size: 16px; transition: all 0.3s; background: rgba(255, 255, 255, 0.8);"
+                                    onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='rgba(0, 136, 204, 0.15)'; this.style.background='rgba(255, 255, 255, 0.8)'">
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Телефон</label>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px;">Телефон</label>
                                 <input type="tel" name="phone" placeholder="+7" 
-                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
-                                    onfocus="this.style.borderColor='var(--primary)'"
-                                    onblur="this.style.borderColor='var(--border)'">
+                                    style="width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 136, 204, 0.15); border-radius: 14px; font-size: 16px; transition: all 0.3s; background: rgba(255, 255, 255, 0.8);"
+                                    onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='rgba(0, 136, 204, 0.15)'; this.style.background='rgba(255, 255, 255, 0.8)'">
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Комментарий</label>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 15px;">Комментарий</label>
                                 <textarea name="description" rows="4" placeholder="Расскажите подробнее о вашем проекте..."
-                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; resize: vertical; transition: border-color 0.3s;"
-                                    onfocus="this.style.borderColor='var(--primary)'"
-                                    onblur="this.style.borderColor='var(--border)'"></textarea>
+                                    style="width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 136, 204, 0.15); border-radius: 14px; font-size: 16px; resize: vertical; transition: all 0.3s; background: rgba(255, 255, 255, 0.8);"
+                                    onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'"
+                                    onblur="this.style.borderColor='rgba(0, 136, 204, 0.15)'; this.style.background='rgba(255, 255, 255, 0.8)'"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 16px;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 17px;">
                                 Отправить заявку
                             </button>
                         </div>
@@ -268,15 +268,18 @@ const app = {
                 .feature-option {
                     display: block;
                     cursor: pointer;
-                    padding: 20px;
-                    border: 2px solid var(--border);
-                    border-radius: 16px;
+                    padding: 24px;
+                    background: rgba(255, 255, 255, 0.6);
+                    backdrop-filter: blur(10px);
+                    border: 2px solid rgba(255, 255, 255, 0.5);
+                    border-radius: 18px;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 }
                 
                 .feature-option:hover {
-                    border-color: var(--primary);
-                    background: rgba(0, 136, 204, 0.02);
+                    border-color: rgba(0, 136, 204, 0.4);
+                    background: rgba(255, 255, 255, 0.8);
+                    transform: translateY(-2px);
                 }
                 
                 .feature-checkbox {
@@ -285,12 +288,13 @@ const app = {
                 
                 .feature-checkbox:checked + .feature-content {
                     border-left: 4px solid var(--primary);
-                    padding-left: 16px;
+                    padding-left: 20px;
                 }
                 
                 .feature-option:has(.feature-checkbox:checked) {
                     border-color: var(--primary);
-                    background: rgba(0, 136, 204, 0.05);
+                    background: rgba(0, 136, 204, 0.08);
+                    box-shadow: 0 8px 24px rgba(0, 136, 204, 0.15);
                 }
                 
                 .feature-content {
@@ -304,25 +308,24 @@ const app = {
                 .feature-header {
                     display: flex;
                     align-items: center;
-                    gap: 16px;
+                    gap: 18px;
                     flex: 1;
                 }
                 
-                .feature-icon {
-                    font-size: 32px;
-                    flex-shrink: 0;
+                .feature-icon-small {
                     width: 48px;
                     height: 48px;
+                    border-radius: 12px;
+                    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-                    border-radius: 12px;
                     color: white;
+                    flex-shrink: 0;
                 }
                 
-                .feature-icon .material-icons-round {
-                    font-size: 28px;
+                .feature-icon-small .material-icons-round {
+                    font-size: 24px;
                 }
                 
                 .feature-info {
@@ -331,8 +334,9 @@ const app = {
                 
                 .feature-title {
                     font-weight: 600;
-                    font-size: 16px;
+                    font-size: 17px;
                     margin-bottom: 4px;
+                    color: var(--text-primary);
                 }
                 
                 .feature-description {
@@ -342,23 +346,25 @@ const app = {
                 
                 .feature-price {
                     font-weight: 700;
-                    font-size: 18px;
+                    font-size: 20px;
                     color: var(--primary);
                     flex-shrink: 0;
                 }
                 
                 .calculator-summary {
-                    padding: 24px;
-                    background: var(--bg-secondary);
-                    border-radius: 16px;
+                    padding: 32px;
+                    background: rgba(0, 136, 204, 0.05);
+                    backdrop-filter: blur(10px);
+                    border-radius: 18px;
+                    border: 1px solid rgba(0, 136, 204, 0.1);
                 }
                 
                 .summary-row {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 12px 0;
-                    border-bottom: 1px solid var(--border);
+                    padding: 16px 0;
+                    border-bottom: 1px solid rgba(0, 136, 204, 0.1);
                 }
                 
                 .summary-row:last-of-type {
@@ -366,19 +372,21 @@ const app = {
                 }
                 
                 .summary-label {
-                    font-size: 15px;
+                    font-size: 16px;
                     color: var(--text-secondary);
                 }
                 
                 .summary-value {
                     font-weight: 600;
-                    font-size: 16px;
+                    font-size: 17px;
                 }
                 
                 .summary-total {
                     font-weight: 800;
-                    font-size: 28px;
-                    color: var(--primary);
+                    font-size: 32px;
+                    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
                 }
                 
                 @media (max-width: 768px) {
@@ -401,32 +409,32 @@ const app = {
         const grid = document.getElementById('portfolio-grid');
         if (!grid) return;
         
-        grid.innerHTML = this.portfolio.map(project => `
-            <div class="card" style="padding: 0; overflow: hidden;">
-                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 60px 32px; text-align: center;">
-                    <span class="material-icons-round" style="font-size: 64px; color: white; margin-bottom: 16px; display: inline-block;">
-                        ${project.image}
+        grid.innerHTML = this.portfolio.map((project, index) => `
+            <div class="card" style="padding: 0; overflow: hidden; animation-delay: ${index * 0.1}s">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 60px 32px; text-align: center; position: relative;">
+                    <span class="material-icons-round" style="font-size: 72px; color: white; margin-bottom: 20px; display: inline-block; opacity: 0.95;">
+                        ${project.icon}
                     </span>
                     <div>
-                        <span style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                        <span style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); color: white; padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;">
                             ${project.category}
                         </span>
                     </div>
                 </div>
-                <div style="padding: 24px;">
-                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">${project.title}</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">${project.description}</p>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                <div style="padding: 32px;">
+                    <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">${project.title}</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 15px; line-height: 1.6;">${project.description}</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;">
                         ${Object.entries(project.metrics).map(([key, value]) => `
-                            <div style="text-align: center; padding: 12px; background: var(--bg-secondary); border-radius: 12px;">
-                                <div style="font-weight: 700; color: var(--primary);">${value}</div>
-                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">${key}</div>
+                            <div style="text-align: center; padding: 16px 12px; background: rgba(0, 136, 204, 0.06); backdrop-filter: blur(10px); border-radius: 14px; border: 1px solid rgba(0, 136, 204, 0.1);">
+                                <div style="font-weight: 700; color: var(--primary); font-size: 16px;">${value}</div>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px; font-weight: 500;">${key}</div>
                             </div>
                         `).join('')}
                     </div>
                     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         ${project.features.map(feature => `
-                            <span style="background: var(--bg-secondary); padding: 6px 12px; border-radius: 8px; font-size: 13px;">
+                            <span style="background: rgba(0, 136, 204, 0.08); padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; color: var(--text-primary);">
                                 ${feature}
                             </span>
                         `).join('')}
@@ -466,17 +474,14 @@ const app = {
         
         this.state.totalPrice = totalPrice;
         
-        // Обновление UI
         document.getElementById('selected-count').textContent = selectedCount;
         document.getElementById('total-price').textContent = totalPrice.toLocaleString('ru') + ' ₽';
         
-        // Срок разработки
         let devTime = '7-10 дней';
         if (selectedCount >= 5) devTime = '14-21 день';
         else if (selectedCount >= 3) devTime = '10-14 дней';
         document.getElementById('development-time').textContent = devTime;
         
-        // Кнопка заказа
         const orderBtn = document.getElementById('order-btn');
         if (selectedCount > 0) {
             orderBtn.disabled = false;
@@ -503,7 +508,6 @@ const app = {
             await this.handleFormSubmit(e.target);
         });
         
-        // Smooth scroll для ссылок
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -566,18 +570,19 @@ const app = {
         
         messageEl.textContent = text;
         messageEl.style.display = 'block';
-        messageEl.style.padding = '16px';
-        messageEl.style.borderRadius = '12px';
+        messageEl.style.padding = '18px 24px';
+        messageEl.style.borderRadius = '14px';
         messageEl.style.fontWeight = '600';
+        messageEl.style.fontSize = '15px';
         
         if (type === 'success') {
-            messageEl.style.background = '#E8F5E9';
+            messageEl.style.background = 'rgba(76, 175, 80, 0.1)';
             messageEl.style.color = '#2E7D32';
-            messageEl.style.border = '2px solid #4CAF50';
+            messageEl.style.border = '2px solid rgba(76, 175, 80, 0.3)';
         } else {
-            messageEl.style.background = '#FFEBEE';
+            messageEl.style.background = 'rgba(244, 67, 54, 0.1)';
             messageEl.style.color = '#C62828';
-            messageEl.style.border = '2px solid #F44336';
+            messageEl.style.border = '2px solid rgba(244, 67, 54, 0.3)';
         }
         
         setTimeout(() => {
@@ -588,7 +593,6 @@ const app = {
     initTelegramWebApp() {
         if (!tg) return;
         
-        // Получаем данные пользователя из Telegram
         if (tg.initDataUnsafe?.user) {
             const user = tg.initDataUnsafe.user;
             this.state.userData = {
@@ -598,7 +602,6 @@ const app = {
                 last_name: user.last_name
             };
             
-            // Автозаполнение формы
             const nameInput = document.querySelector('input[name="name"]');
             const telegramInput = document.querySelector('input[name="telegram"]');
             
@@ -611,7 +614,6 @@ const app = {
             }
         }
         
-        // Настройка темы
         if (tg.themeParams) {
             document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#ffffff');
             document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#000000');
@@ -620,7 +622,6 @@ const app = {
     }
 };
 
-// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', () => {
     app.init();
     console.log('NaexAgency App initialized');

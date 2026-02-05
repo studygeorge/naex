@@ -17,23 +17,14 @@
     
     <style>
         :root {
-            --tg-theme-bg-color: #ffffff;
-            --tg-theme-text-color: #000000;
-            --tg-theme-hint-color: #999999;
-            --tg-theme-link-color: #0088cc;
-            --tg-theme-button-color: #0088cc;
-            --tg-theme-button-text-color: #ffffff;
-            --tg-theme-secondary-bg-color: #f4f4f5;
-            
             --primary: #0088cc;
             --secondary: #229ED9;
             --accent: #64B5F6;
-            --success: #4CAF50;
             --text-primary: #000000;
             --text-secondary: #707579;
-            --bg-primary: #ffffff;
-            --bg-secondary: #f4f4f5;
-            --border: #e5e7eb;
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --border: rgba(0, 136, 204, 0.1);
             --shadow: rgba(0, 136, 204, 0.15);
         }
         
@@ -52,28 +43,51 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            position: relative;
         }
         
-        /* Glassmorphism эффект */
+        /* Фоновые декоративные элементы */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 136, 204, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -300px;
+            left: -200px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(34, 158, 217, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Glassmorphism */
         .glass {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.1);
         }
         
-        .glass-dark {
-            background: rgba(0, 136, 204, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 136, 204, 0.1);
-        }
-        
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         
         /* Header */
@@ -82,7 +96,7 @@
             top: 0;
             z-index: 100;
             padding: 16px 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
@@ -123,7 +137,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 15px;
@@ -132,6 +146,22 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
         .btn-primary {
@@ -145,10 +175,6 @@
             box-shadow: 0 8px 24px var(--shadow);
         }
         
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-        
         .btn-outline {
             background: transparent;
             color: var(--primary);
@@ -156,27 +182,14 @@
         }
         
         .btn-outline:hover {
-            background: var(--primary);
-            color: white;
+            background: rgba(0, 136, 204, 0.05);
+            transform: translateY(-2px);
         }
         
-        /* Hero Section */
+        /* Hero */
         .hero {
-            padding: 80px 0 60px;
+            padding: 100px 0 80px;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(0, 136, 204, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
         }
         
         .hero-content {
@@ -191,24 +204,28 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            background: var(--bg-secondary);
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 136, 204, 0.2);
             border-radius: 100px;
             font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 32px;
             animation: fadeInUp 0.6s ease-out;
         }
         
         .hero-title {
-            font-size: clamp(32px, 6vw, 56px);
+            font-size: clamp(36px, 6vw, 64px);
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.1;
             margin-bottom: 24px;
             animation: fadeInUp 0.6s ease-out 0.1s both;
+            letter-spacing: -0.02em;
         }
         
-        .hero-title .gradient-text {
+        .gradient-text {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -216,10 +233,11 @@
         }
         
         .hero-subtitle {
-            font-size: clamp(16px, 3vw, 20px);
+            font-size: clamp(18px, 3vw, 22px);
             color: var(--text-secondary);
             margin-bottom: 40px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
+            font-weight: 400;
         }
         
         .hero-buttons {
@@ -233,8 +251,8 @@
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 48px;
-            margin-top: 60px;
+            gap: 60px;
+            margin-top: 80px;
             flex-wrap: wrap;
             animation: fadeInUp 0.6s ease-out 0.4s both;
         }
@@ -244,53 +262,59 @@
         }
         
         .stat-value {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 800;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: block;
+            letter-spacing: -0.02em;
         }
         
         .stat-label {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
-            margin-top: 4px;
+            margin-top: 8px;
+            font-weight: 500;
         }
         
         /* Card */
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 136, 204, 0.12);
-            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 136, 204, 0.15);
+            border-color: rgba(0, 136, 204, 0.3);
         }
         
         .card-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0, 136, 204, 0.25);
         }
         
         .card-icon .material-icons-round {
-            font-size: 32px;
+            font-size: 36px;
         }
         
         .card-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--text-primary);
@@ -304,7 +328,8 @@
         
         /* Section */
         .section {
-            padding: 80px 0;
+            padding: 100px 0;
+            position: relative;
         }
         
         .section-header {
@@ -314,14 +339,16 @@
         }
         
         .section-title {
-            font-size: clamp(28px, 5vw, 42px);
+            font-size: clamp(32px, 5vw, 48px);
             font-weight: 800;
             margin-bottom: 16px;
+            letter-spacing: -0.02em;
         }
         
         .section-subtitle {
             font-size: 18px;
             color: var(--text-secondary);
+            font-weight: 400;
         }
         
         /* Grid */
@@ -335,7 +362,7 @@
         }
         
         .grid-3 {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
         
         /* Animations */
@@ -350,44 +377,23 @@
             }
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .hero {
-                padding: 60px 0 40px;
+                padding: 80px 0 60px;
             }
             
             .section {
-                padding: 60px 0;
+                padding: 80px 0;
             }
             
             .hero-stats {
-                gap: 32px;
+                gap: 40px;
             }
             
             .card {
                 padding: 24px;
             }
-        }
-        
-        /* Loading state */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
-        /* Success animation */
-        @keyframes success-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .success {
-            animation: success-pulse 0.6s ease-out;
         }
     </style>
 </head>
@@ -448,42 +454,36 @@
         </div>
     </section>
 
-    <!-- Features placeholder -->
+    <!-- Features -->
     <section class="section" id="features">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Что умеет <span class="gradient-text">ваш бот</span></h2>
                 <p class="section-subtitle">Выберите готовые модули или создайте уникальное решение</p>
             </div>
-            <div class="grid grid-3" id="features-grid">
-                <!-- Будет заполнено через JS -->
-            </div>
+            <div class="grid grid-3" id="features-grid"></div>
         </div>
     </section>
 
-    <!-- Calculator placeholder -->
-    <section class="section glass-dark" id="calculator">
+    <!-- Calculator -->
+    <section class="section" id="calculator">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Соберите <span class="gradient-text">своего бота</span></h2>
                 <p class="section-subtitle">Выбирайте функции и смотрите стоимость в реальном времени</p>
             </div>
-            <div id="calculator-container">
-                <!-- Будет заполнено через JS -->
-            </div>
+            <div id="calculator-container"></div>
         </div>
     </section>
 
-    <!-- Portfolio placeholder -->
+    <!-- Portfolio -->
     <section class="section" id="portfolio">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Наши <span class="gradient-text">работы</span></h2>
                 <p class="section-subtitle">Реальные проекты для различных бизнесов</p>
             </div>
-            <div class="grid grid-2" id="portfolio-grid">
-                <!-- Будет заполнено через JS -->
-            </div>
+            <div class="grid grid-2" id="portfolio-grid"></div>
         </div>
     </section>
 
