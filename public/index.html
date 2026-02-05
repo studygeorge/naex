@@ -190,6 +190,14 @@
             padding: 0 24px;
         }
         
+        /* Light theme header (default) */
+        @media (prefers-color-scheme: light) {
+            .header {
+                background: rgba(255, 255, 255, 0.9);
+                border-bottom: 1px solid rgba(0, 136, 204, 0.1);
+            }
+        }
+        
         .logo {
             font-size: 20px;
             font-weight: 700;
@@ -214,6 +222,15 @@
         .header-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 136, 204, 0.3);
+        }
+        
+        /* Light theme header overrides (default) */
+        @media (prefers-color-scheme: light) {
+            .header-cta {
+                background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+                color: white;
+                border: none;
+            }
         }
         
         /* Main Content */
@@ -380,6 +397,23 @@
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.9);
             transform: translateY(-3px);
+        }
+        
+        /* Light theme overrides (default) */
+        @media (prefers-color-scheme: light) {
+            .btn-primary {
+                background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+                color: white;
+                box-shadow: 0 8px 20px rgba(0, 136, 204, 0.2);
+                border: none;
+            }
+            
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                color: var(--text-dark);
+                border: 2px solid rgba(0, 136, 204, 0.2);
+            }
         }
         
         /* Section */
