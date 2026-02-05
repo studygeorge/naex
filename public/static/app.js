@@ -323,10 +323,17 @@ function switchPortfolio(category) {
 document.addEventListener('DOMContentLoaded', function() {
     const switcherButtons = document.querySelectorAll('.switcher-btn');
     switcherButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        // Добавляем множественные обработчики для максимальной совместимости
+        const handleSwitch = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             const category = this.getAttribute('data-category');
             switchPortfolio(category);
-        });
+        };
+        
+        btn.addEventListener('click', handleSwitch);
+        btn.addEventListener('touchend', handleSwitch);
+        btn.addEventListener('mouseup', handleSwitch);
     });
 });
 
