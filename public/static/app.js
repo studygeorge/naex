@@ -60,7 +60,7 @@ function updateActiveNav(sectionId) {
                 const itemRect = item.getBoundingClientRect();
                 
                 const leftOffset = itemRect.left - containerRect.left;
-                const padding = 6;
+                const padding = 4;
                 
                 activeBg.style.left = `${leftOffset + padding}px`;
                 activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const itemRect = item.getBoundingClientRect();
                 
                 const leftOffset = itemRect.left - containerRect.left;
-                const padding = 6;
+                const padding = 4;
                 
                 activeBg.style.left = `${leftOffset + padding}px`;
                 activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemRect = initialActive.getBoundingClientRect();
             
             const leftOffset = itemRect.left - containerRect.left;
-            const padding = 6;
+            const padding = 4;
             
             activeBg.style.left = `${leftOffset + padding}px`;
             activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
