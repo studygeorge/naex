@@ -47,6 +47,7 @@ function scrollToSection(sectionId) {
 function updateActiveNav(sectionId) {
     const navItems = document.querySelectorAll('.nav-item');
     const activeBg = document.querySelector('.nav-active-bg');
+    const bottomNav = document.querySelector('.bottom-nav');
     
     navItems.forEach((item, index) => {
         item.classList.remove('active');
@@ -54,10 +55,13 @@ function updateActiveNav(sectionId) {
             item.classList.add('active');
             
             // Animate active background to the position
-            if (activeBg) {
-                const itemWidth = 100 / navItems.length;
-                activeBg.style.left = `${index * itemWidth}%`;
-                activeBg.style.width = `${itemWidth}%`;
+            if (activeBg && bottomNav) {
+                const navWidth = bottomNav.offsetWidth - 16;
+                const itemWidth = navWidth / navItems.length;
+                const padding = 8;
+                
+                activeBg.style.left = `${(index * itemWidth) + padding}px`;
+                activeBg.style.width = `${itemWidth - (padding * 2)}px`;
             }
         }
     });
@@ -350,10 +354,17 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             
             const activeBg = document.querySelector('.nav-active-bg');
-            const itemWidth = 100 / document.querySelectorAll('.nav-item').length;
-            if (activeBg) {
-                activeBg.style.left = `${index * itemWidth}%`;
-                activeBg.style.width = `${itemWidth}%`;
+            const bottomNav = document.querySelector('.bottom-nav');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            if (activeBg && bottomNav) {
+                // Calculate position with padding compensation
+                const navWidth = bottomNav.offsetWidth - 16; // minus padding
+                const itemWidth = navWidth / navItems.length;
+                const padding = 8; // horizontal padding for tighter fit
+                
+                activeBg.style.left = `${(index * itemWidth) + padding}px`;
+                activeBg.style.width = `${itemWidth - (padding * 2)}px`;
             }
             
             // Scroll to section
@@ -367,10 +378,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const navItems = document.querySelectorAll('.nav-item');
         const index = Array.from(navItems).indexOf(initialActive);
         const activeBg = document.querySelector('.nav-active-bg');
-        const itemWidth = 100 / navItems.length;
-        if (activeBg) {
-            activeBg.style.left = `${index * itemWidth}%`;
-            activeBg.style.width = `${itemWidth}%`;
+        const bottomNav = document.querySelector('.bottom-nav');
+        
+        if (activeBg && bottomNav) {
+            // Calculate position with padding compensation
+            const navWidth = bottomNav.offsetWidth - 16; // minus padding
+            const itemWidth = navWidth / navItems.length;
+            const padding = 8; // horizontal padding for tighter fit
+            
+            activeBg.style.left = `${(index * itemWidth) + padding}px`;
+            activeBg.style.width = `${itemWidth - (padding * 2)}px`;
         }
     }
     
