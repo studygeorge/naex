@@ -55,7 +55,7 @@ function updateActiveNav(pageName) {
             const containerRect = bottomNav.getBoundingClientRect();
             const itemRect = item.getBoundingClientRect();
             const leftOffset = itemRect.left - containerRect.left;
-            const padding = 6; // Match container padding
+            const padding = 4; // Reduced for tighter fit
             
             activeBg.style.left = `${leftOffset + padding}px`;
             activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
