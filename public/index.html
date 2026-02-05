@@ -1039,100 +1039,110 @@
             }
         }
         
-        /* News Slider */
-        .news-slider-container {
-            padding: 40px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        
-        .news-slider {
-            display: flex;
-            gap: 16px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 8px 0;
-        }
-        
-        .news-slider::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .news-card {
-            flex: 0 0 auto;
-            width: 320px;
-            height: 140px;
-            border-radius: 20px;
-            padding: 24px;
+        /* News Slider - Full Width Auto-Changing */
+        .news-slider-wrapper {
+            width: 100%;
             position: relative;
             overflow: hidden;
-            scroll-snap-align: start;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .news-slider-track {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
         }
         
-        .news-card:hover {
-            transform: translateY(-4px);
+        .news-slide {
+            min-width: 100%;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
         
-        .news-card.orange {
+        .news-slide.active {
+            opacity: 1;
+        }
+        
+        .news-slide.orange {
             background: linear-gradient(135deg, #FF9500 0%, #FF6B00 100%);
         }
         
-        .news-card.purple {
+        .news-slide.purple {
             background: linear-gradient(135deg, #9D4EDD 0%, #7B2CBF 100%);
         }
         
-        .news-card.blue {
+        .news-slide.blue {
             background: linear-gradient(135deg, #0088cc 0%, #229ED9 100%);
         }
         
-        .news-card.green {
+        .news-slide.green {
             background: linear-gradient(135deg, #00D4AA 0%, #00A67E 100%);
         }
         
-        .news-card::before {
+        .news-slide::before {
             content: '';
             position: absolute;
-            right: -20px;
-            top: -20px;
-            width: 140px;
-            height: 140px;
+            right: -20%;
+            top: -20%;
+            width: 40%;
+            height: 140%;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            filter: blur(30px);
+            filter: blur(60px);
         }
         
-        .news-card h3 {
-            font-size: 18px;
+        .slide-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .news-slide h3 {
+            font-size: 24px;
             font-weight: 700;
             color: white;
-            margin: 0;
-            position: relative;
-            z-index: 1;
+            margin: 0 0 12px;
         }
         
-        .news-card p {
-            font-size: 14px;
+        .news-slide p {
+            font-size: 16px;
             color: rgba(255, 255, 255, 0.9);
-            margin: 8px 0 0;
-            position: relative;
-            z-index: 1;
+            margin: 0;
         }
         
-        .news-card-icon {
+        .slider-dots {
             position: absolute;
-            right: 20px;
             bottom: 20px;
-            font-size: 48px;
-            opacity: 0.2;
-            z-index: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
         }
         
         /* Responsive */
@@ -1197,39 +1207,43 @@
         </section>
         
         <!-- News Slider -->
-        <div class="news-slider-container">
-            <div class="news-slider">
-                <div class="news-card orange" onclick="openBrief()">
-                    <div>
+        <div class="news-slider-wrapper">
+            <div class="news-slider-track">
+                <div class="news-slide active orange" onclick="openBrief()">
+                    <div class="slide-content">
                         <h3>Зарабатывайте до 25% годовых на AOI</h3>
                         <p>Начать зарабатывать →</p>
                     </div>
-                    <div class="news-card-icon">💎</div>
                 </div>
                 
-                <div class="news-card purple" onclick="openBrief()">
-                    <div>
+                <div class="news-slide purple" onclick="openBrief()">
+                    <div class="slide-content">
                         <h3>Дарим акции на сумму до 100 $</h3>
                         <p>Узнать больше →</p>
                     </div>
-                    <div class="news-card-icon">🎁</div>
                 </div>
                 
-                <div class="news-card blue" onclick="openBrief()">
-                    <div>
+                <div class="news-slide blue" onclick="openBrief()">
+                    <div class="slide-content">
                         <h3>Запустите свой Telegram-бот за 7 дней</h3>
                         <p>Получить консультацию →</p>
                     </div>
-                    <div class="news-card-icon">🚀</div>
                 </div>
                 
-                <div class="news-card green" onclick="openBrief()">
-                    <div>
+                <div class="news-slide green" onclick="openBrief()">
+                    <div class="slide-content">
                         <h3>Скидка 15% на разработку Mini App</h3>
                         <p>Оставить заявку →</p>
                     </div>
-                    <div class="news-card-icon">💰</div>
                 </div>
+            </div>
+            
+            <!-- Slider dots -->
+            <div class="slider-dots">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
             </div>
         </div>
         

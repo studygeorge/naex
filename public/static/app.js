@@ -296,3 +296,93 @@ document.getElementById('briefModal').addEventListener('click', function(e) {
 function scrollToSection(section) {
     switchPage(section);
 }
+
+// News Slider - Auto-change every 15 seconds
+let currentSlide = 0;
+let slideInterval;
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.news-slide');
+    const dots = document.querySelectorAll('.dot');
+    
+    if (!slides.length) return;
+    
+    // Wrap around
+    if (index >= slides.length) currentSlide = 0;
+    else if (index < 0) currentSlide = slides.length - 1;
+    else currentSlide = index;
+    
+    // Update slides
+    slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === currentSlide) {
+            slide.classList.add('active');
+        }
+    });
+    
+    // Update dots
+    dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === currentSlide) {
+            dot.classList.add('active');
+        }
+    });
+    
+    // Update track position
+    const track = document.querySelector('.news-slider-track');
+    if (track) {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+}
+
+function nextSlide() {
+    showSlide(currentSlide + 1);
+}
+
+function goToSlide(index) {
+    showSlide(index);
+    // Reset interval
+    clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 15000);
+}
+
+// Touch swipe support
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sliderWrapper = document.querySelector('.news-slider-wrapper');
+    
+    if (sliderWrapper) {
+        // Auto-advance every 15 seconds
+        slideInterval = setInterval(nextSlide, 15000);
+        
+        // Touch events for swipe
+        sliderWrapper.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        sliderWrapper.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+    }
+});
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Swipe left - next slide
+            nextSlide();
+        } else {
+            // Swipe right - previous slide
+            showSlide(currentSlide - 1);
+        }
+        // Reset interval
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, 15000);
+    }
+}
