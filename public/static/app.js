@@ -25,11 +25,23 @@ function switchPage(pageName) {
     const pages = document.querySelectorAll('.page');
     pages.forEach(page => page.classList.remove('active'));
     
-    // Show target page
+    // Show target page and reset its scroll
     const targetPage = document.getElementById(`page-${pageName}`);
     if (targetPage) {
         targetPage.classList.add('active');
         currentPage = pageName;
+        
+        // КРИТИЧНО: Сбрасываем scroll самой страницы (она теперь scroll контейнер)
+        targetPage.scrollTop = 0;
+        
+        // Дополнительный сброс с небольшой задержкой для Telegram
+        setTimeout(() => {
+            targetPage.scrollTop = 0;
+        }, 0);
+        
+        setTimeout(() => {
+            targetPage.scrollTop = 0;
+        }, 100);
     }
     
     // Update navigation
