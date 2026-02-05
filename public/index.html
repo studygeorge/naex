@@ -2,371 +2,701 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>NaexAgency - Создай своего Telegram бота</title>
-    <meta name="description" content="Создайте Telegram бота для вашего бизнеса. Конструктор ботов, калькулятор стоимости, готовые решения.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Naex Agency - Разработка Telegram ботов и мини-приложений</title>
+    <meta name="description" content="Профессиональная разработка Telegram-ботов, мини-приложений и веб-сайтов. Запускаем проекты, которые работают на результат.">
     
-    <!-- Telegram WebApp -->
+    <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- Fonts -->
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #0088cc;
-            --secondary: #229ED9;
-            --accent: #64B5F6;
-            --text-primary: #000000;
-            --text-secondary: #707579;
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --border: rgba(0, 136, 204, 0.1);
-            --shadow: rgba(0, 136, 204, 0.15);
+            --tg-theme-bg-color: #f8fafc;
+            --tg-theme-text-color: #1e293b;
+            --tg-theme-hint-color: #64748b;
+            --tg-theme-link-color: #0088cc;
+            --tg-theme-button-color: #0088cc;
+            --tg-theme-button-text-color: #ffffff;
+            
+            --primary-blue: #0088cc;
+            --secondary-blue: #229ED9;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --bg-light: #f8fafc;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            position: relative;
         }
         
-        /* Фоновые декоративные элементы */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -200px;
-            right: -200px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 136, 204, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -300px;
-            left: -200px;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(34, 158, 217, 0.12) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        /* Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.1);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Header */
+        /* Fixed Header */
         .header {
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            padding: 16px 0;
-            background: rgba(255, 255, 255, 0.8);
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .header-content {
+            border-bottom: 1px solid rgba(0, 136, 204, 0.1);
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 24px;
         }
         
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
             font-size: 20px;
-            font-weight: 800;
-        }
-        
-        /* Button */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 28px;
-            border-radius: 16px;
-            font-weight: 600;
-            font-size: 15px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 2px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            box-shadow: 0 4px 16px var(--shadow);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--shadow);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: rgba(0, 136, 204, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        /* Hero */
-        .hero {
-            padding: 100px 0 80px;
-            position: relative;
-        }
-        
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 136, 204, 0.2);
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        .hero-title {
-            font-size: clamp(36px, 6vw, 64px);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
-            letter-spacing: -0.02em;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .hero-subtitle {
-            font-size: clamp(18px, 3vw, 22px);
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
-            font-weight: 400;
+        .header-cta {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
         
-        .hero-buttons {
+        .header-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.3);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 60px;
+            padding-bottom: 80px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 140px);
             display: flex;
-            gap: 16px;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+            text-align: center;
+            padding: 60px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 136, 204, 0.15), transparent);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -200px;
+            left: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(34, 158, 217, 0.15), transparent);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            line-height: 1.8;
         }
         
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 60px;
-            margin-top: 80px;
+            gap: 48px;
+            margin-top: 60px;
             flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.4s both;
         }
         
         .stat-item {
             text-align: center;
         }
         
-        .stat-value {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: block;
-            letter-spacing: -0.02em;
+            background-clip: text;
+            margin-bottom: 8px;
         }
         
         .stat-label {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-gray);
         }
         
-        /* Card */
-        .card {
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary,
+        .btn-secondary {
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 136, 204, 0.35);
+        }
+        
+        .btn-secondary {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-dark);
+            border: 2px solid rgba(0, 136, 204, 0.2);
         }
         
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0, 136, 204, 0.15);
-            border-color: rgba(0, 136, 204, 0.3);
-        }
-        
-        .card-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(0, 136, 204, 0.25);
-        }
-        
-        .card-icon .material-icons-round {
-            font-size: 36px;
-        }
-        
-        .card-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-        
-        .card-description {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.6;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
         }
         
         /* Section */
         .section {
-            padding: 100px 0;
-            position: relative;
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .section-header {
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
+            margin-bottom: 60px;
         }
         
         .section-title {
-            font-size: clamp(32px, 5vw, 48px);
-            font-weight: 800;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
             margin-bottom: 16px;
-            letter-spacing: -0.02em;
         }
         
         .section-subtitle {
             font-size: 18px;
-            color: var(--text-secondary);
-            font-weight: 400;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
         }
         
-        /* Grid */
-        .grid {
+        /* Process Section */
+        .process-steps {
             display: grid;
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
         }
         
-        .grid-2 {
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .process-card {
+            text-align: center;
+            padding: 32px 24px;
+            position: relative;
         }
         
-        .grid-3 {
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .process-number {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .process-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .process-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+        
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(0, 136, 204, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 136, 204, 0.15);
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .service-icon span {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .service-card p {
+            color: var(--text-gray);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+        
+        .service-price {
+            font-size: 14px;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .portfolio-item {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 136, 204, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 136, 204, 0.15);
+        }
+        
+        .portfolio-header {
+            padding: 32px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+        }
+        
+        .portfolio-category {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .portfolio-header h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .portfolio-body {
+            padding: 32px;
+        }
+        
+        .portfolio-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 16px;
+            background: rgba(0, 136, 204, 0.05);
+            border-radius: 12px;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+        
+        /* Reviews */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .review-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid rgba(0, 136, 204, 0.1);
+        }
+        
+        .review-stars {
+            color: #FFB800;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .review-text {
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .author-info h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .author-role {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 136, 204, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-blue);
+            background: rgba(0, 136, 204, 0.1);
+        }
+        
+        .nav-item span.material-icons-round {
+            font-size: 24px;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Brief Form Modal */
+        .brief-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        
+        .brief-modal.active {
+            display: flex;
+        }
+        
+        .brief-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .brief-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-gray);
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .brief-step {
+            display: none;
+        }
+        
+        .brief-step.active {
+            display: block;
+        }
+        
+        .brief-progress {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .progress-dot {
+            flex: 1;
+            height: 4px;
+            background: rgba(0, 136, 204, 0.2);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.completed {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .brief-step h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .brief-step p {
+            color: var(--text-gray);
+            margin-bottom: 32px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(0, 136, 204, 0.2);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .option-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .option-btn {
+            padding: 16px;
+            border: 2px solid rgba(0, 136, 204, 0.2);
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .option-btn:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 136, 204, 0.05);
+        }
+        
+        .option-btn.selected {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border-color: transparent;
+        }
+        
+        .brief-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+        
+        .brief-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .brief-btn.btn-next {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+        }
+        
+        .brief-btn.btn-back {
+            background: rgba(0, 136, 204, 0.1);
+            color: var(--text-dark);
         }
         
         /* Animations */
-        @keyframes fadeInUp {
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -379,114 +709,410 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            .hero {
-                padding: 80px 0 60px;
-            }
-            
-            .section {
-                padding: 80px 0;
-            }
-            
             .hero-stats {
-                gap: 40px;
+                gap: 32px;
             }
             
-            .card {
+            .services-grid,
+            .portfolio-grid,
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brief-content {
                 padding: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Fixed Header -->
     <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="/" class="logo">
-                    <div class="logo-icon">N</div>
-                    <span>NaexAgency</span>
-                </a>
-                <a href="#calculator" class="btn btn-primary">
-                    Создать бота
-                </a>
-            </div>
-        </div>
+        <div class="logo">Naex</div>
+        <button class="header-cta" onclick="openBrief()">Обсудить проект</button>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
             <div class="hero-content">
-                <div class="hero-badge">
-                    Создайте бота за 5 минут
+                <h1>Разрабатываем Telegram-ботов и мини-приложения</h1>
+                <p>Запускаем проекты, которые работают на результат. Без лишних слов, только эффективные решения для вашего бизнеса.</p>
+                
+                <div class="cta-buttons">
+                    <button class="btn-primary" onclick="openBrief()">
+                        <span class="material-icons-round">rocket_launch</span>
+                        Начать проект
+                    </button>
+                    <button class="btn-secondary" onclick="scrollToSection('portfolio')">
+                        <span class="material-icons-round">visibility</span>
+                        Портфолио
+                    </button>
                 </div>
-                <h1 class="hero-title">
-                    Telegram бот для <br>
-                    <span class="gradient-text">вашего бизнеса</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Автоматизируйте продажи, поддержку клиентов и бронирование. <br>
-                    Выберите функции и получите готовое решение под ключ.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#calculator" class="btn btn-primary">
-                        Собрать своего бота
-                    </a>
-                    <a href="#portfolio" class="btn btn-outline">
-                        Посмотреть работы
-                    </a>
-                </div>
+                
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-value">127+</span>
-                        <span class="stat-label">Готовых ботов</span>
+                        <div class="stat-number">4+</div>
+                        <div class="stat-label">года опыта</div>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">98%</span>
-                        <span class="stat-label">Довольных клиентов</span>
+                        <div class="stat-number">40+</div>
+                        <div class="stat-label">проектов</div>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">7-14</span>
-                        <span class="stat-label">Дней до запуска</span>
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">в срок</div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Features -->
-    <section class="section" id="features">
-        <div class="container">
+        </section>
+        
+        <!-- Process Section -->
+        <section class="section" id="process">
             <div class="section-header">
-                <h2 class="section-title">Что умеет <span class="gradient-text">ваш бот</span></h2>
-                <p class="section-subtitle">Выберите готовые модули или создайте уникальное решение</p>
+                <h2 class="section-title">Как мы работаем</h2>
+                <p class="section-subtitle">Прозрачный процесс разработки от идеи до запуска</p>
             </div>
-            <div class="grid grid-3" id="features-grid"></div>
-        </div>
-    </section>
-
-    <!-- Calculator -->
-    <section class="section" id="calculator">
-        <div class="container">
+            
+            <div class="process-steps">
+                <div class="process-card">
+                    <div class="process-number">1</div>
+                    <h3>Анализ</h3>
+                    <p>Изучаем вашу задачу и бизнес-цели. Определяем техническое задание и сроки.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">2</div>
+                    <h3>Прототип</h3>
+                    <p>Создаем UX/UI дизайн и интерактивный прототип для согласования.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">3</div>
+                    <h3>Разработка</h3>
+                    <p>Программируем функционал, интегрируем API и тестируем каждый этап.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">4</div>
+                    <h3>Запуск</h3>
+                    <p>Публикуем проект, настраиваем аналитику и обучаем команду работе с системой.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Services Section -->
+        <section class="section" id="services">
             <div class="section-header">
-                <h2 class="section-title">Соберите <span class="gradient-text">своего бота</span></h2>
-                <p class="section-subtitle">Выбирайте функции и смотрите стоимость в реальном времени</p>
+                <h2 class="section-title">Услуги</h2>
+                <p class="section-subtitle">Комплексные решения для вашего бизнеса в Telegram</p>
             </div>
-            <div id="calculator-container"></div>
-        </div>
-    </section>
-
-    <!-- Portfolio -->
-    <section class="section" id="portfolio">
-        <div class="container">
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-icons-round">phone_iphone</span>
+                    </div>
+                    <h3>Telegram Mini Apps</h3>
+                    <p>Веб-приложения внутри Telegram с доступом к данным пользователя. Интернет-магазины, сервисы бронирования, каталоги.</p>
+                    <div class="service-price">от 450 000 ₽</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-icons-round">smart_toy</span>
+                    </div>
+                    <h3>Telegram Боты</h3>
+                    <p>Автоматизация бизнес-процессов, CRM-системы, платежи, рассылки, интеграции с вашими сервисами.</p>
+                    <div class="service-price">от 200 000 ₽</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-icons-round">language</span>
+                    </div>
+                    <h3>Веб-разработка</h3>
+                    <p>Landing page, корпоративные сайты, веб-приложения. Современный дизайн и быстрая разработка.</p>
+                    <div class="service-price">от 150 000 ₽</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Portfolio Section -->
+        <section class="section" id="portfolio">
             <div class="section-header">
-                <h2 class="section-title">Наши <span class="gradient-text">работы</span></h2>
-                <p class="section-subtitle">Реальные проекты для различных бизнесов</p>
+                <h2 class="section-title">Портфолио</h2>
+                <p class="section-subtitle">Реальные проекты с измеримыми результатами</p>
             </div>
-            <div class="grid grid-2" id="portfolio-grid"></div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-header">
+                        <div class="portfolio-category">Mini App</div>
+                        <h3>Онлайн-магазин косметики</h3>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-metrics">
+                            <div class="metric">
+                                <div class="metric-value">127%</div>
+                                <div class="metric-label">Рост продаж</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">8.4%</div>
+                                <div class="metric-label">Конверсия</div>
+                            </div>
+                        </div>
+                        <p>Интеграция каталога товаров с возможностью оплаты через Telegram Payments и автоматическим уведомлением о заказах.</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-header">
+                        <div class="portfolio-category">Telegram Bot</div>
+                        <h3>CRM для стоматологии</h3>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-metrics">
+                            <div class="metric">
+                                <div class="metric-value">-40%</div>
+                                <div class="metric-label">Время записи</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">350+</div>
+                                <div class="metric-label">Записей/мес</div>
+                            </div>
+                        </div>
+                        <p>Автоматизация записи пациентов, напоминания о приемах, интеграция с 1С и онлайн-оплата услуг.</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-header">
+                        <div class="portfolio-category">Mini App + Bot</div>
+                        <h3>Система для мероприятий</h3>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-metrics">
+                            <div class="metric">
+                                <div class="metric-value">2500+</div>
+                                <div class="metric-label">Участников</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">98%</div>
+                                <div class="metric-label">Довольны</div>
+                            </div>
+                        </div>
+                        <p>Регистрация, нетворкинг, расписание, навигация по площадке и геймификация для вовлечения гостей.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Reviews Section -->
+        <section class="section" id="reviews">
+            <div class="section-header">
+                <h2 class="section-title">Отзывы клиентов</h2>
+                <p class="section-subtitle">Что говорят о нашей работе</p>
+            </div>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Команда Naex сделала нам крутой бот для автоматизации записи. Сэкономили кучу времени администраторов, клиенты довольны. Рекомендую!</p>
+                    <div class="review-author">
+                        <div class="author-avatar">АМ</div>
+                        <div class="author-info">
+                            <h4>Анна Морозова</h4>
+                            <div class="author-role">Владелец сети стоматологий</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Отличное мини-приложение для нашего ивента! Участники были в восторге от удобства и функционала. Все сделано быстро и качественно.</p>
+                    <div class="review-author">
+                        <div class="author-avatar">ДК</div>
+                        <div class="author-info">
+                            <h4>Дмитрий Козлов</h4>
+                            <div class="author-role">Event-менеджер</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">Запустили магазин в Telegram благодаря Naex. Конверсия выше, чем на сайте. Проект окупился за 2 месяца. Спасибо за профессионализм!</p>
+                    <div class="review-author">
+                        <div class="author-avatar">ЕС</div>
+                        <div class="author-info">
+                            <h4>Елена Соколова</h4>
+                            <div class="author-role">Основатель бренда косметики</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="section" id="contact">
+            <div class="section-header">
+                <h2 class="section-title">Контакты</h2>
+                <p class="section-subtitle">Свяжитесь с нами удобным способом</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 48px;">
+                <div style="display: inline-flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+                    <div style="display: flex; align-items: center; gap: 12px; font-size: 18px;">
+                        <span class="material-icons-round" style="color: var(--primary-blue);">telegram</span>
+                        <a href="https://t.me/naexagency" style="color: var(--text-dark); text-decoration: none;">@naexagency</a>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; font-size: 18px;">
+                        <span class="material-icons-round" style="color: var(--primary-blue);">email</span>
+                        <a href="mailto:hello@naexagency.com" style="color: var(--text-dark); text-decoration: none;">hello@naexagency.com</a>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 48px;">
+                    <button class="btn-primary" onclick="openBrief()">
+                        <span class="material-icons-round">send</span>
+                        Отправить заявку
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" data-section="home" onclick="scrollToSection('home')">
+            <span class="material-icons-round">home</span>
+            <span class="nav-label">Главная</span>
+        </a>
+        <a class="nav-item" data-section="services" onclick="scrollToSection('services')">
+            <span class="material-icons-round">build</span>
+            <span class="nav-label">Услуги</span>
+        </a>
+        <a class="nav-item" data-section="portfolio" onclick="scrollToSection('portfolio')">
+            <span class="material-icons-round">work</span>
+            <span class="nav-label">Портфолио</span>
+        </a>
+        <a class="nav-item" data-section="contact" onclick="scrollToSection('contact')">
+            <span class="material-icons-round">mail</span>
+            <span class="nav-label">Контакты</span>
+        </a>
+    </nav>
+    
+    <!-- Brief Modal -->
+    <div class="brief-modal" id="briefModal">
+        <div class="brief-content">
+            <button class="brief-close" onclick="closeBrief()">&times;</button>
+            
+            <!-- Step 1: Service Selection -->
+            <div class="brief-step active" data-step="1">
+                <div class="brief-progress">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                
+                <h3>Какая услуга вас интересует?</h3>
+                <p>Выберите направление для вашего проекта</p>
+                
+                <div class="option-buttons">
+                    <button class="option-btn" data-value="mini-app">Telegram Mini App</button>
+                    <button class="option-btn" data-value="bot">Telegram Бот</button>
+                    <button class="option-btn" data-value="web">Веб-сайт</button>
+                    <button class="option-btn" data-value="consult">Консультация</button>
+                </div>
+                
+                <div class="brief-buttons">
+                    <button class="brief-btn btn-next" onclick="nextBriefStep()">Далее</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Project Description -->
+            <div class="brief-step" data-step="2">
+                <div class="brief-progress">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                
+                <h3>Расскажите о проекте</h3>
+                <p>Кратко опишите ваши задачи и цели</p>
+                
+                <div class="form-group">
+                    <label>Описание проекта</label>
+                    <textarea id="projectDesc" placeholder="Например: Нужен бот для автоматизации записи клиентов в салон красоты..."></textarea>
+                </div>
+                
+                <div class="brief-buttons">
+                    <button class="brief-btn btn-back" onclick="prevBriefStep()">Назад</button>
+                    <button class="brief-btn btn-next" onclick="nextBriefStep()">Далее</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Budget -->
+            <div class="brief-step" data-step="3">
+                <div class="brief-progress">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                
+                <h3>Какой у вас бюджет?</h3>
+                <p>Это поможет нам предложить оптимальное решение</p>
+                
+                <div class="option-buttons">
+                    <button class="option-btn" data-value="150-300k">150-300к ₽</button>
+                    <button class="option-btn" data-value="300-500k">300-500к ₽</button>
+                    <button class="option-btn" data-value="500k+">500к+ ₽</button>
+                    <button class="option-btn" data-value="unknown">Не определился</button>
+                </div>
+                
+                <div class="brief-buttons">
+                    <button class="brief-btn btn-back" onclick="prevBriefStep()">Назад</button>
+                    <button class="brief-btn btn-next" onclick="nextBriefStep()">Далее</button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Contact Info -->
+            <div class="brief-step" data-step="4">
+                <div class="brief-progress">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                </div>
+                
+                <h3>Как с вами связаться?</h3>
+                <p>Оставьте контакты для обратной связи</p>
+                
+                <div class="form-group">
+                    <label>Ваше имя</label>
+                    <input type="text" id="clientName" placeholder="Иван Петров">
+                </div>
+                
+                <div class="form-group">
+                    <label>Telegram</label>
+                    <input type="text" id="clientTelegram" placeholder="@username">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email (опционально)</label>
+                    <input type="email" id="clientEmail" placeholder="ivan@example.com">
+                </div>
+                
+                <div class="brief-buttons">
+                    <button class="brief-btn btn-back" onclick="prevBriefStep()">Назад</button>
+                    <button class="brief-btn btn-next" onclick="submitBrief()">Отправить заявку</button>
+                </div>
+            </div>
         </div>
-    </section>
-
+    </div>
+    
     <script src="/static/app.js"></script>
 </body>
 </html>
