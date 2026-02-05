@@ -148,6 +148,27 @@
             padding-bottom: 100px;
         }
         
+        /* Page System */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Hero Section */
         .hero {
             min-height: calc(100vh - 140px);
@@ -844,9 +865,11 @@
     
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="hero-content">
+        <!-- Page: Home -->
+        <div id="page-home" class="page active">
+            <!-- Hero Section -->
+            <section class="hero" id="home">
+                <div class="hero-content">
                 <h1>Разрабатываем Telegram-ботов и мини-приложения</h1>
                 <p>Запускаем проекты, которые работают на результат. Без лишних слов, только эффективные решения для вашего бизнеса.</p>
                 
@@ -854,7 +877,7 @@
                     <button class="btn-primary" onclick="openBrief()">
                         Начать проект
                     </button>
-                    <button class="btn-secondary" onclick="scrollToSection('portfolio')">
+                    <button class="btn-secondary" onclick="switchPage('portfolio')">
                         Портфолио
                     </button>
                 </div>
@@ -906,7 +929,11 @@
                 </div>
             </div>
         </section>
+        </div>
+        <!-- End Page: Home -->
         
+        <!-- Page: Services -->
+        <div id="page-services" class="page">
         <!-- Services Section -->
         <section class="section" id="services">
             <div class="section-header">
@@ -943,7 +970,11 @@
                 </div>
             </div>
         </section>
+        </div>
+        <!-- End Page: Services -->
         
+        <!-- Page: Portfolio -->
+        <div id="page-portfolio" class="page">
         <!-- Portfolio Section -->
         <section class="section" id="portfolio">
             <div class="section-header">
@@ -1013,6 +1044,11 @@
                 </div>
             </div>
         </section>
+        </div>
+        <!-- End Page: Portfolio -->
+        
+        <!-- Page: Contact -->
+        <div id="page-contact" class="page">
         
         <!-- Reviews Section -->
         <section class="section" id="reviews">
@@ -1087,6 +1123,8 @@
                 </div>
             </div>
         </section>
+        </div>
+        <!-- End Page: Contact -->
     </main>
     
     <!-- Bottom Navigation -->

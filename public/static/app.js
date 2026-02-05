@@ -1,16 +1,101 @@
-// Telegram WebApp Initialization
-if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-    const tg = Telegram.WebApp;
-    tg.ready();
-    tg.expand();
+// Telegram WebApp initialization
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+// Apply Telegram theme colors
+document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#f8fafc');
+document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#1e293b');
+document.documentElement.style.setProperty('--tg-theme-hint-color', tg.themeParams.hint_color || '#64748b');
+document.documentElement.style.setProperty('--tg-theme-link-color', tg.themeParams.link_color || '#0088cc');
+document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color || '#0088cc');
+document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color || '#ffffff');
+
+// Current page state
+let currentPage = 'home';
+
+// Navigation function - switch between pages
+function switchPage(pageName) {
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
     
-    // Apply Telegram theme colors
-    document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#f8fafc');
-    document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#1e293b');
+    // Hide all pages
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+    
+    // Show target page
+    const targetPage = document.getElementById(`page-${pageName}`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        currentPage = pageName;
+    }
+    
+    // Update navigation
+    updateActiveNav(pageName);
 }
 
-// Brief Form State
-let briefData = {
+// Update active navigation button
+function updateActiveNav(pageName) {
+    const navItems = document.querySelectorAll('.nav-item');
+    const activeBg = document.querySelector('.nav-active-bg');
+    const bottomNav = document.querySelector('.bottom-nav');
+    
+    if (!activeBg || !bottomNav) return;
+    
+    navItems.forEach((item, index) => {
+        const section = item.getAttribute('data-section');
+        
+        if (section === pageName) {
+            // Mark as active
+            item.classList.add('active');
+            
+            // Calculate position for active background
+            const containerRect = bottomNav.getBoundingClientRect();
+            const itemRect = item.getBoundingClientRect();
+            const leftOffset = itemRect.left - containerRect.left;
+            const padding = 4;
+            
+            activeBg.style.left = `${leftOffset + padding}px`;
+            activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+// Initialize navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Add click handlers
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+            switchPage(section);
+        });
+        
+        // Touch support for Telegram
+        item.addEventListener('touchstart', function(e) {
+            this.style.opacity = '0.7';
+        });
+        
+        item.addEventListener('touchend', function(e) {
+            this.style.opacity = '1';
+        });
+    });
+    
+    // Initialize active background position
+    const activeItem = document.querySelector('.nav-item.active');
+    if (activeItem) {
+        updateActiveNav('home');
+    }
+});
+
+// Brief form state
+const briefData = {
     service: '',
     description: '',
     budget: '',
@@ -21,393 +106,193 @@ let briefData = {
 
 let currentStep = 1;
 
-// Navigation & Scroll
-function scrollToSection(sectionId) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-        
-        // Update active nav item
-        updateActiveNav(sectionId);
-        
-        // Haptic feedback
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-        }
-    }
-}
-
-function updateActiveNav(sectionId) {
-    const navItems = document.querySelectorAll('.nav-item');
-    const activeBg = document.querySelector('.nav-active-bg');
-    const navContainer = document.querySelector('.bottom-nav');
-    
-    navItems.forEach((item, index) => {
-        item.classList.remove('active');
-        if (item.dataset.section === sectionId) {
-            item.classList.add('active');
-            
-            // Animate active background to actual button position
-            if (activeBg && navContainer) {
-                const containerRect = navContainer.getBoundingClientRect();
-                const itemRect = item.getBoundingClientRect();
-                
-                const leftOffset = itemRect.left - containerRect.left;
-                const padding = 2;
-                
-                activeBg.style.left = `${leftOffset + padding}px`;
-                activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
-            }
-        }
-    });
-}
-
-// Scroll spy for navigation
-window.addEventListener('scroll', () => {
-    const sections = ['home', 'process', 'services', 'portfolio', 'reviews', 'contact'];
-    let currentSection = 'home';
-    
-    sections.forEach(sectionId => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 150 && rect.bottom >= 150) {
-                currentSection = sectionId;
-            }
-        }
-    });
-    
-    updateActiveNav(currentSection);
-});
-
-// Scroll animations
-function checkScrollAnimations() {
-    const elements = document.querySelectorAll('.section');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementBottom = element.getBoundingClientRect().bottom;
-        
-        if (elementTop < window.innerHeight * 0.8 && elementBottom > 0) {
-            element.classList.add('fade-in');
-        }
-    });
-}
-
-window.addEventListener('scroll', checkScrollAnimations);
-window.addEventListener('load', checkScrollAnimations);
-
-// Brief Modal Functions
 function openBrief() {
     const modal = document.getElementById('briefModal');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-    // Auto-fill from Telegram if available
-    if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe.user) {
-        const user = Telegram.WebApp.initDataUnsafe.user;
-        document.getElementById('clientName').value = `${user.first_name || ''} ${user.last_name || ''}`.trim();
-        document.getElementById('clientTelegram').value = user.username ? `@${user.username}` : '';
-    }
+    modal.style.display = 'flex';
+    currentStep = 1;
+    showBriefStep(1);
     
     // Haptic feedback
-    if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+    
+    // Try to prefill Telegram data
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (user.first_name || user.last_name) {
+            document.getElementById('clientName').value = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+        }
+        if (user.username) {
+            document.getElementById('clientTelegram').value = `@${user.username}`;
+        }
     }
 }
 
 function closeBrief() {
     const modal = document.getElementById('briefModal');
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
+    modal.style.display = 'none';
+    currentStep = 1;
     
-    // Reset form
-    resetBrief();
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
 }
 
-function resetBrief() {
-    currentStep = 1;
-    briefData = {
-        service: '',
-        description: '',
-        budget: '',
-        name: '',
-        telegram: '',
-        email: ''
-    };
+function showBriefStep(step) {
+    const steps = document.querySelectorAll('.brief-step');
+    steps.forEach(s => s.classList.remove('active'));
     
-    // Reset all steps
-    document.querySelectorAll('.brief-step').forEach(step => {
-        step.classList.remove('active');
-    });
-    document.querySelector('[data-step="1"]').classList.add('active');
-    
-    // Reset selections
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    
-    // Clear inputs
-    document.getElementById('projectDesc').value = '';
-    document.getElementById('clientName').value = '';
-    document.getElementById('clientTelegram').value = '';
-    document.getElementById('clientEmail').value = '';
+    const targetStep = document.querySelector(`.brief-step[data-step="${step}"]`);
+    if (targetStep) {
+        targetStep.classList.add('active');
+        currentStep = step;
+    }
 }
 
 function nextBriefStep() {
-    const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
-    
     // Validate current step
-    if (!validateStep(currentStep)) {
-        alert('Пожалуйста, заполните все обязательные поля');
-        return;
+    if (currentStep === 1) {
+        const selected = document.querySelector('.option-btn.selected');
+        if (!selected) {
+            alert('Пожалуйста, выберите услугу');
+            return;
+        }
+        briefData.service = selected.dataset.value;
+    } else if (currentStep === 2) {
+        const description = document.getElementById('projectDesc').value.trim();
+        if (!description) {
+            alert('Пожалуйста, опишите проект');
+            return;
+        }
+        briefData.description = description;
+    } else if (currentStep === 3) {
+        const selected = document.querySelector('.budget-option.selected');
+        if (!selected) {
+            alert('Пожалуйста, выберите бюджет');
+            return;
+        }
+        briefData.budget = selected.dataset.value;
     }
     
-    // Save data
-    saveStepData(currentStep);
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
     
-    // Move to next step
     if (currentStep < 4) {
-        currentStepElement.classList.remove('active');
-        currentStep++;
-        document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-        
-        // Haptic feedback
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-        }
+        showBriefStep(currentStep + 1);
     }
 }
 
 function prevBriefStep() {
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
+    
     if (currentStep > 1) {
-        const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
-        currentStepElement.classList.remove('active');
-        currentStep--;
-        document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-        
-        // Haptic feedback
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-        }
-    }
-}
-
-function validateStep(step) {
-    switch(step) {
-        case 1:
-            return briefData.service !== '';
-        case 2:
-            return document.getElementById('projectDesc').value.trim() !== '';
-        case 3:
-            return briefData.budget !== '';
-        case 4:
-            const name = document.getElementById('clientName').value.trim();
-            const telegram = document.getElementById('clientTelegram').value.trim();
-            return name !== '' && telegram !== '';
-        default:
-            return true;
-    }
-}
-
-function saveStepData(step) {
-    switch(step) {
-        case 1:
-            // Service already saved via option click
-            break;
-        case 2:
-            briefData.description = document.getElementById('projectDesc').value.trim();
-            break;
-        case 3:
-            // Budget already saved via option click
-            break;
-        case 4:
-            briefData.name = document.getElementById('clientName').value.trim();
-            briefData.telegram = document.getElementById('clientTelegram').value.trim();
-            briefData.email = document.getElementById('clientEmail').value.trim();
-            break;
+        showBriefStep(currentStep - 1);
     }
 }
 
 async function submitBrief() {
-    if (!validateStep(4)) {
-        alert('Пожалуйста, заполните все обязательные поля');
+    // Validate final step
+    const name = document.getElementById('clientName').value.trim();
+    const telegram = document.getElementById('clientTelegram').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    
+    if (!name) {
+        alert('Пожалуйста, введите имя');
         return;
     }
     
-    saveStepData(4);
+    if (!telegram && !email) {
+        alert('Пожалуйста, укажите Telegram или Email');
+        return;
+    }
     
-    // Prepare data for API
-    const requestData = {
-        name: briefData.name,
-        contact: briefData.telegram,
-        service: briefData.service,
-        description: briefData.description,
-        budget: briefData.budget,
-        email: briefData.email || 'Не указан'
-    };
+    briefData.name = name;
+    briefData.telegram = telegram;
+    briefData.email = email;
+    
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('success');
+    }
     
     try {
         const response = await fetch('/api/requests', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(briefData)
         });
         
         if (response.ok) {
-            // Success haptic
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-            }
-            
-            alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+            alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
             closeBrief();
+            
+            // Reset form
+            briefData.service = '';
+            briefData.description = '';
+            briefData.budget = '';
+            briefData.name = '';
+            briefData.telegram = '';
+            briefData.email = '';
+            document.querySelectorAll('.option-btn, .budget-option').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('projectDesc').value = '';
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientTelegram').value = '';
+            document.getElementById('clientEmail').value = '';
         } else {
-            throw new Error('Network response was not ok');
+            alert('Произошла ошибка. Попробуйте позже.');
         }
     } catch (error) {
         console.error('Error submitting brief:', error);
-        
-        // Error haptic
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.HapticFeedback.notificationOccurred('error');
-        }
-        
-        alert('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже или свяжитесь с нами напрямую.');
+        alert('Произошла ошибка. Попробуйте позже.');
     }
 }
 
 // Option button selection
-document.addEventListener('DOMContentLoaded', () => {
-    // Service selection (Step 1)
-    const serviceButtons = document.querySelectorAll('[data-step="1"] .option-btn');
-    serviceButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            serviceButtons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            briefData.service = btn.dataset.value;
+document.addEventListener('DOMContentLoaded', function() {
+    // Service selection
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
             
             // Haptic feedback
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
             }
         });
     });
     
-    // Budget selection (Step 3)
-    const budgetButtons = document.querySelectorAll('[data-step="3"] .option-btn');
-    budgetButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            budgetButtons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            briefData.budget = btn.dataset.value;
+    // Budget selection
+    document.querySelectorAll('.budget-option').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.budget-option').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
             
             // Haptic feedback
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
             }
         });
     });
-    
-    // Close modal on background click
-    const modal = document.getElementById('briefModal');
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeBrief();
-        }
-    });
-    
-    // Smooth scroll for all internal links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            scrollToSection(targetId);
-        });
-    });
-    
-    // Bottom nav click handlers
-    document.querySelectorAll('.nav-item').forEach((item, index) => {
-        // Use touchstart for better mobile/Telegram support
-        const eventType = 'ontouchstart' in window ? 'touchstart' : 'click';
-        
-        item.addEventListener(eventType, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const section = item.dataset.section;
-            
-            // Haptic feedback
-            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-                Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-            }
-            
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            
-            // Animate background to actual button position
-            const activeBg = document.querySelector('.nav-active-bg');
-            const navContainer = document.querySelector('.bottom-nav');
-            
-            if (activeBg && navContainer) {
-                const containerRect = navContainer.getBoundingClientRect();
-                const itemRect = item.getBoundingClientRect();
-                
-                const leftOffset = itemRect.left - containerRect.left;
-                const padding = 2;
-                
-                activeBg.style.left = `${leftOffset + padding}px`;
-                activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
-            }
-            
-            // Scroll to section
-            scrollToSection(section);
-        });
-    });
-    
-    // Initialize active background position
-    const initialActive = document.querySelector('.nav-item.active');
-    if (initialActive) {
-        const navItems = document.querySelectorAll('.nav-item');
-        const index = Array.from(navItems).indexOf(initialActive);
-        const activeBg = document.querySelector('.nav-active-bg');
-        
-        if (activeBg) {
-            // Use flex positioning - calculate actual button position
-            const navContainer = document.querySelector('.bottom-nav');
-            const containerRect = navContainer.getBoundingClientRect();
-            const itemRect = initialActive.getBoundingClientRect();
-            
-            const leftOffset = itemRect.left - containerRect.left;
-            const padding = 2;
-            
-            activeBg.style.left = `${leftOffset + padding}px`;
-            activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
-        }
-    }
-    
-    // Animate elements on load
-    setTimeout(() => {
-        checkScrollAnimations();
-    }, 100);
 });
 
-// Prevent body scroll when modal is open
-document.addEventListener('touchmove', (e) => {
-    if (document.getElementById('briefModal').classList.contains('active')) {
-        const modal = e.target.closest('.brief-content');
-        if (!modal) {
-            e.preventDefault();
-        }
+// Close modal on outside click
+document.getElementById('briefModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeBrief();
     }
-}, { passive: false });
+});
+
+// Legacy function for inline onclick handlers
+function scrollToSection(section) {
+    switchPage(section);
+}
