@@ -1036,16 +1036,16 @@
         /* News Slider - Rounded with padding */
         .news-slider-wrapper {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 24px;
+            margin: 0 auto;
+            padding: 40px 24px 0;
             position: relative;
         }
         
         .news-slider-track {
             position: relative;
-            height: 140px;
-            overflow: hidden;
-            border-radius: 24px;
+            height: 100px;
+            overflow: visible;
+            border-radius: 20px;
         }
         
         .news-slide {
@@ -1057,11 +1057,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 24px 32px;
+            padding: 20px 28px;
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.5s ease;
             overflow: visible;
+            border-radius: 20px;
         }
         
         .news-slide.active {
@@ -1093,15 +1094,15 @@
         }
         
         .news-slide h3 {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
             color: white;
-            margin: 0 0 8px;
-            line-height: 1.3;
+            margin: 0 0 6px;
+            line-height: 1.2;
         }
         
         .news-slide p {
-            font-size: 15px;
+            font-size: 14px;
             color: rgba(255, 255, 255, 0.9);
             margin: 0;
             font-weight: 500;
@@ -1109,29 +1110,31 @@
         
         .slide-image {
             position: relative;
-            width: 160px;
-            height: 160px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 3;
-            margin-right: -20px;
-            margin-top: -20px;
-            margin-bottom: -20px;
+            flex-shrink: 0;
         }
         
         .slide-image img {
-            width: 100%;
-            height: 100%;
+            width: 120px;
+            height: 120px;
             object-fit: contain;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
         }
         
         .slider-dots {
             display: flex;
             gap: 8px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 16px;
         }
         
         .dot {
@@ -1150,22 +1153,34 @@
         }
         
         @media (max-width: 768px) {
+            .news-slider-wrapper {
+                padding: 32px 16px 0;
+            }
+            
+            .news-slider-track {
+                height: 90px;
+            }
+            
             .news-slide {
-                padding: 20px 24px;
+                padding: 16px 20px;
             }
             
             .news-slide h3 {
-                font-size: 18px;
+                font-size: 16px;
             }
             
             .news-slide p {
-                font-size: 14px;
+                font-size: 13px;
             }
             
             .slide-image {
-                width: 120px;
-                height: 120px;
-                margin-right: -10px;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .slide-image img {
+                width: 100px;
+                height: 100px;
             }
         }
         
@@ -1239,12 +1254,7 @@
                         <p>Получить консультацию →</p>
                     </div>
                     <div class="slide-image">
-                        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="80" cy="80" r="60" fill="white" opacity="0.2"/>
-                            <path d="M80 40L100 70H60L80 40Z" fill="white"/>
-                            <rect x="70" y="70" width="20" height="50" fill="white"/>
-                            <circle cx="80" cy="100" r="15" fill="rgba(255,255,255,0.5)"/>
-                        </svg>
+                        <img src="/images/slide1.png" alt="Mini App" />
                     </div>
                 </div>
                 
@@ -1254,12 +1264,7 @@
                         <p>Узнать больше →</p>
                     </div>
                     <div class="slide-image">
-                        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="50" y="50" width="60" height="60" rx="15" fill="white" opacity="0.2"/>
-                            <circle cx="70" cy="75" r="8" fill="white"/>
-                            <circle cx="90" cy="75" r="8" fill="white"/>
-                            <path d="M65 95C65 95 70 100 80 100C90 100 95 95 95 95" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                        </svg>
+                        <img src="/images/slide2.png" alt="Bot" />
                     </div>
                 </div>
                 
@@ -1269,13 +1274,7 @@
                         <p>Оставить заявку →</p>
                     </div>
                     <div class="slide-image">
-                        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="80" cy="60" r="20" fill="white" opacity="0.3"/>
-                            <circle cx="60" cy="100" r="15" fill="white" opacity="0.3"/>
-                            <circle cx="100" cy="100" r="15" fill="white" opacity="0.3"/>
-                            <line x1="80" y1="80" x2="60" y2="90" stroke="white" stroke-width="3"/>
-                            <line x1="80" y1="80" x2="100" y2="90" stroke="white" stroke-width="3"/>
-                        </svg>
+                        <img src="/images/slide3.png" alt="Automation" />
                     </div>
                 </div>
                 
@@ -1285,11 +1284,7 @@
                         <p>Начать сейчас →</p>
                     </div>
                     <div class="slide-image">
-                        <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="50" width="80" height="60" rx="10" fill="white" opacity="0.2"/>
-                            <circle cx="80" cy="70" r="12" fill="white"/>
-                            <path d="M60 95C60 95 70 85 80 85C90 85 100 95 100 95V110H60V95Z" fill="white"/>
-                        </svg>
+                        <img src="/images/slide4.png" alt="Consultation" />
                     </div>
                 </div>
             </div>
