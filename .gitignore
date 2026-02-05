@@ -29,5 +29,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# database
+database/*.db
+database/*.db-shm
+database/*.db-wal
+
+# pm2
+.pm2/
+pids/
+
 # misc
 .DS_Store
+

@@ -1,192 +1,375 @@
-# TeleBotAgency - Веб-агентство по разработке Telegram ботов
+# TeleBotAgency - Node.js VPS Version
 
 ## Описание проекта
-Профессиональный сайт веб-агентства, специализирующегося на разработке Telegram ботов для бизнеса. Современный дизайн, высокая производительность, полная интеграция с базой данных.
-
-## URLs
-- **Production**: https://3000-i4h6c7sfr7xbb1vj4az47-6532622b.e2b.dev
-- **API Base**: https://3000-i4h6c7sfr7xbb1vj4az47-6532622b.e2b.dev/api
+Профессиональный сайт веб-агентства для разработки Telegram ботов. **Адаптирован для развертывания на VPS с Node.js**.
 
 ## Технологический стек
-- **Backend**: Hono (TypeScript) - легковесный, быстрый фреймворк
+- **Backend**: Express.js + TypeScript
 - **Frontend**: Vanilla JS с компонентной архитектурой
 - **Стилизация**: TailwindCSS + кастомные анимации
-- **База данных**: Cloudflare D1 (SQLite)
-- **Деплой**: Cloudflare Pages (edge-сеть)
+- **База данных**: SQLite3 (локальная файловая БД)
 - **Process Manager**: PM2
-
-## Архитектура данных
-
-### Модели данных
-
-**Таблица requests (заявки):**
-- `id` - уникальный идентификатор
-- `name` - имя клиента
-- `email` - email клиента
-- `phone` - телефон (опционально)
-- `telegram` - Telegram username (опционально)
-- `project_type` - тип проекта (shop/crm/booking/support/custom)
-- `budget` - бюджет проекта
-- `description` - описание проекта
-- `status` - статус заявки (new/processing/completed/cancelled)
-- `created_at` - дата создания
-
-**Таблица contacts (контактные сообщения):**
-- `id` - уникальный идентификатор
-- `name` - имя отправителя
-- `email` - email отправителя
-- `message` - текст сообщения
-- `created_at` - дата создания
-
-### API Endpoints
-
-**Заявки:**
-- `GET /api/requests` - получить все заявки
-- `POST /api/requests` - создать новую заявку
-- `GET /api/requests/:id` - получить заявку по ID
-- `PATCH /api/requests/:id/status` - обновить статус заявки
-
-**Контакты:**
-- `GET /api/contacts` - получить все сообщения
-- `POST /api/contacts` - отправить новое сообщение
-
-### Хранилище
-- **Cloudflare D1**: Основная база данных для хранения заявок и сообщений
-- **Локальная разработка**: SQLite в `.wrangler/state/v3/d1`
-
-## Основные функции
-
-### Реализованные возможности
-- Hero-секция с анимациями и статистикой
-- Блок услуг с 6 категориями (e-commerce, бронирование, CRM и т.д.)
-- Портфолио с 6 реализованными проектами
-- Три тарифных плана (Старт, Бизнес, Энтерпрайз)
-- Контактная форма с валидацией
-- API для приема заявок и сообщений
-- Адаптивный дизайн для всех устройств
-- Плавные анимации и переходы
-- SEO-оптимизированная структура
-
-### Особенности UI/UX
-- Темная цветовая схема
-- Градиенты и свечения
-- Анимации появления элементов
-- Hover-эффекты на карточках
-- Плавная прокрутка между секциями
-- Кастомные скроллбары
-- Адаптивная навигация
+- **Runtime**: Node.js 18+
 
 ## Структура проекта
 ```
 webapp/
 ├── src/
-│   ├── index.tsx              # Главный файл приложения Hono
+│   ├── server.ts              # Основной Express сервер
+│   ├── database.ts            # SQLite подключение и схема
 │   └── routes/
-│       ├── requests.ts        # API роуты для заявок
-│       └── contacts.ts        # API роуты для контактов
+│       ├── requests-node.ts   # API для заявок
+│       └── contacts-node.ts   # API для контактов
 ├── public/
 │   └── static/
 │       ├── app.js             # Клиентский JavaScript
 │       └── style.css          # Кастомные стили
-├── migrations/
-│   └── 0001_initial_schema.sql # Схема базы данных
-├── dist/                       # Собранные файлы (создается при build)
-├── ecosystem.config.cjs        # Конфигурация PM2
-├── wrangler.jsonc             # Конфигурация Cloudflare
-├── package.json               # Зависимости и скрипты
-└── README.md                  # Документация
+├── database/
+│   └── webapp.db              # SQLite база данных (создается автоматически)
+├── logs/                       # PM2 логи
+├── ecosystem.config.cjs        # PM2 конфигурация
+├── package.json               # Зависимости
+├── .env.example               # Пример переменных окружения
+└── README.md
 ```
 
-## Команды для разработки
+## Быстрый старт
 
-### Локальная разработка
+### 1. Клонирование репозитория
 ```bash
-# Сборка проекта
-npm run build
+# На вашем VPS
+git clone https://github.com/ваш-username/webapp.git
+cd webapp
+```
 
-# Применить миграции к локальной БД
-npm run db:migrate:local
+### 2. Установка зависимостей
+```bash
+npm install
+```
 
-# Запуск сервера разработки
-pm2 start ecosystem.config.cjs
+### 3. Настройка окружения
+```bash
+# Скопируйте пример .env файла
+cp .env.example .env
+
+# Отредактируйте если нужно
+nano .env
+```
+
+### 4. Запуск приложения
+
+#### Разработка (с автоперезагрузкой)
+```bash
+npm run dev
+```
+
+#### Production (с PM2)
+```bash
+# Запуск
+npm run pm2:start
 
 # Проверка статуса
 pm2 list
 
 # Просмотр логов
-pm2 logs webapp --nostream
+npm run pm2:logs
 
 # Перезапуск
-fuser -k 3000/tcp && pm2 restart webapp
+npm run pm2:restart
 
 # Остановка
-pm2 delete webapp
+npm run pm2:stop
+
+# Удаление из PM2
+npm run pm2:delete
 ```
 
-### База данных
+## API Endpoints
+
+### Заявки
+- `GET /api/requests` - получить все заявки
+- `POST /api/requests` - создать новую заявку
+- `GET /api/requests/:id` - получить заявку по ID
+- `PATCH /api/requests/:id/status` - обновить статус
+
+**Пример создания заявки:**
 ```bash
-# Применить миграции локально
-npm run db:migrate:local
-
-# Консоль базы данных
-npm run db:console:local
-
-# Применить миграции в production
-npm run db:migrate:prod
+curl -X POST http://localhost:3000/api/requests \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Иван Иванов",
+    "email": "ivan@example.com",
+    "phone": "+7 999 123-45-67",
+    "telegram": "@ivanov",
+    "project_type": "shop",
+    "budget": "30000-50000",
+    "description": "Нужен бот для интернет-магазина"
+  }'
 ```
 
-### Деплой
+### Контакты
+- `GET /api/contacts` - получить все сообщения
+- `POST /api/contacts` - отправить новое сообщение
+
+### Служебные
+- `GET /health` - health check endpoint
+
+## Настройка для Production на VPS
+
+### 1. Установка зависимостей на сервере
 ```bash
-# Сборка и деплой в Cloudflare Pages
-npm run deploy:prod
+# Обновление системы
+sudo apt update && sudo apt upgrade -y
 
-# Требуется предварительно:
-# 1. Настроить CLOUDFLARE_API_TOKEN
-# 2. Создать production D1 базу: npx wrangler d1 create webapp-production
-# 3. Применить миграции: npm run db:migrate:prod
+# Установка Node.js 20.x
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# Установка PM2 глобально
+sudo npm install -g pm2
+
+# Установка build-essential для native модулей (better-sqlite3)
+sudo apt install -y build-essential python3
 ```
 
-## Возможности для расширения
+### 2. Настройка приложения
+```bash
+# Клонирование и установка
+git clone https://github.com/ваш-username/webapp.git /var/www/webapp
+cd /var/www/webapp
+npm install --production
 
-### Рекомендуемые улучшения
-1. **Админ-панель** для управления заявками
-2. **Email уведомления** при получении новых заявок
-3. **Telegram Bot** для уведомлений команды
-4. **Статистика и аналитика** по заявкам
-5. **Блог** с кейсами и статьями
-6. **Калькулятор стоимости** проекта
-7. **Онлайн-чат** с поддержкой
-8. **Многоязычность** (EN/RU)
+# Создание директорий
+mkdir -p database logs
 
-### Планируемая интеграция
-- Stripe/PayPal для приема платежей
-- SendGrid для email-рассылок
-- Google Analytics для аналитики
-- Telegram Bot API для уведомлений
+# Настройка прав
+chown -R $USER:$USER /var/www/webapp
+chmod -R 755 /var/www/webapp
+```
 
-## Производительность
-- Edge-развертывание через Cloudflare Pages
-- Глобальная CDN для статики
-- Оптимизированная база данных D1
-- Минимальный размер бандла
-- Lazy loading изображений
-- CSS/JS оптимизация
+### 3. Настройка Nginx как reverse proxy
+```bash
+sudo apt install nginx -y
+```
+
+Создайте конфиг `/etc/nginx/sites-available/webapp`:
+```nginx
+server {
+    listen 80;
+    server_name ваш-домен.ru www.ваш-домен.ru;
+
+    # Увеличение лимита размера загружаемых файлов
+    client_max_body_size 10M;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+Активируйте конфиг:
+```bash
+sudo ln -s /etc/nginx/sites-available/webapp /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### 4. Настройка SSL с Let's Encrypt
+```bash
+# Установка Certbot
+sudo apt install certbot python3-certbot-nginx -y
+
+# Получение SSL сертификата
+sudo certbot --nginx -d ваш-домен.ru -d www.ваш-домен.ru
+
+# Автообновление (проверка)
+sudo certbot renew --dry-run
+```
+
+### 5. Настройка автозапуска PM2
+```bash
+# Запуск приложения
+cd /var/www/webapp
+pm2 start ecosystem.config.cjs
+
+# Сохранение списка процессов
+pm2 save
+
+# Настройка автозапуска при перезагрузке сервера
+pm2 startup systemd
+# Выполните команду, которую покажет PM2
+
+# Проверка
+sudo reboot
+# После перезагрузки:
+pm2 list  # Приложение должно работать
+```
+
+### 6. Мониторинг и логи
+```bash
+# Логи PM2
+pm2 logs webapp
+
+# Статус процессов
+pm2 status
+
+# Мониторинг ресурсов
+pm2 monit
+
+# Просмотр логов Nginx
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+```
+
+## Обновление приложения
+
+### Через Git
+```bash
+cd /var/www/webapp
+
+# Получить последние изменения
+git pull origin main
+
+# Установить новые зависимости (если есть)
+npm install --production
+
+# Перезапустить приложение
+pm2 restart webapp
+```
+
+### Резервное копирование БД
+```bash
+# Создание бэкапа
+cp database/webapp.db database/webapp.db.backup-$(date +%Y%m%d-%H%M%S)
+
+# Или через cron (каждый день в 3:00)
+crontab -e
+# Добавьте строку:
+# 0 3 * * * cp /var/www/webapp/database/webapp.db /var/www/webapp/database/webapp.db.backup-$(date +\%Y\%m\%d)
+```
+
+## Переменные окружения
+
+Создайте файл `.env` в корне проекта:
+```env
+NODE_ENV=production
+PORT=3000
+DATABASE_PATH=./database/webapp.db
+LOG_LEVEL=info
+```
 
 ## Безопасность
-- CORS настроен для API
-- Валидация всех входящих данных
-- SQL-инъекции защищены через prepared statements
-- Email валидация на клиенте и сервере
-- Rate limiting (рекомендуется добавить)
 
-## Статус развертывания
-- **Платформа**: Cloudflare Pages (готово к деплою)
-- **Статус разработки**: Активная разработка
-- **Локальный сервер**: Запущен на порту 3000
-- **База данных**: D1 (локальная миграция применена)
-- **Последнее обновление**: 2026-02-05
+### Firewall
+```bash
+# UFW (Ubuntu)
+sudo ufw allow 22/tcp      # SSH
+sudo ufw allow 80/tcp      # HTTP
+sudo ufw allow 443/tcp     # HTTPS
+sudo ufw enable
+```
 
-## Контакты
+### Rate Limiting (опционально)
+Для защиты от DDoS можно добавить rate limiting в Nginx или использовать модуль `express-rate-limit`.
+
+## Производительность
+
+### Оптимизация SQLite
+База данных уже оптимизирована с индексами:
+- `idx_requests_status` - для фильтрации по статусу
+- `idx_requests_created` - для сортировки по дате
+- `idx_contacts_created` - для сортировки контактов
+
+### PM2 кластер (опционально)
+Для высоконагруженных проектов можно запустить несколько инстансов:
+```javascript
+// ecosystem.config.cjs
+module.exports = {
+  apps: [{
+    name: 'webapp',
+    script: 'tsx',
+    args: 'src/server.ts',
+    instances: 'max',  // Использовать все CPU ядра
+    exec_mode: 'cluster'
+  }]
+}
+```
+
+## Мониторинг
+
+### PM2 Plus (опционально)
+```bash
+pm2 link <secret> <public>  # Регистрация на pm2.io
+```
+
+### Logrotate для больших логов
+```bash
+sudo nano /etc/logrotate.d/webapp
+```
+```
+/var/www/webapp/logs/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 username username
+    sharedscripts
+}
+```
+
+## Troubleshooting
+
+### Приложение не запускается
+```bash
+# Проверить логи PM2
+pm2 logs webapp --err
+
+# Проверить права на директории
+ls -la /var/www/webapp/database
+ls -la /var/www/webapp/logs
+
+# Проверить порт
+sudo netstat -tlnp | grep 3000
+```
+
+### База данных не работает
+```bash
+# Проверить существование файла БД
+ls -la database/webapp.db
+
+# Проверить права
+chmod 644 database/webapp.db
+
+# Пересоздать БД (удалит все данные!)
+rm database/webapp.db
+npm run pm2:restart
+```
+
+### Nginx ошибки
+```bash
+# Тест конфигурации
+sudo nginx -t
+
+# Перезапуск
+sudo systemctl restart nginx
+
+# Логи
+sudo tail -f /var/log/nginx/error.log
+```
+
+## Контакты и поддержка
 - Email: info@telebotag.ru
 - Telegram: @telebotag
 - Телефон: +7 (999) 123-45-67
+
+## Лицензия
+Proprietary - все права защищены.
