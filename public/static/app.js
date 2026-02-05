@@ -47,21 +47,23 @@ function scrollToSection(sectionId) {
 function updateActiveNav(sectionId) {
     const navItems = document.querySelectorAll('.nav-item');
     const activeBg = document.querySelector('.nav-active-bg');
-    const bottomNav = document.querySelector('.bottom-nav');
+    const navContainer = document.querySelector('.bottom-nav');
     
     navItems.forEach((item, index) => {
         item.classList.remove('active');
         if (item.dataset.section === sectionId) {
             item.classList.add('active');
             
-            // Animate active background to the position
-            if (activeBg && bottomNav) {
-                const navWidth = bottomNav.offsetWidth - 16;
-                const itemWidth = navWidth / navItems.length;
-                const padding = 8;
+            // Animate active background to actual button position
+            if (activeBg && navContainer) {
+                const containerRect = navContainer.getBoundingClientRect();
+                const itemRect = item.getBoundingClientRect();
                 
-                activeBg.style.left = `${(index * itemWidth) + padding}px`;
-                activeBg.style.width = `${itemWidth - (padding * 2)}px`;
+                const leftOffset = itemRect.left - containerRect.left;
+                const padding = 6;
+                
+                activeBg.style.left = `${leftOffset + padding}px`;
+                activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
             }
         }
     });
@@ -349,22 +351,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 Telegram.WebApp.HapticFeedback.impactOccurred('soft');
             }
             
-            // Update active state and animate background
+            // Update active state
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             
+            // Animate background to actual button position
             const activeBg = document.querySelector('.nav-active-bg');
-            const bottomNav = document.querySelector('.bottom-nav');
-            const navItems = document.querySelectorAll('.nav-item');
+            const navContainer = document.querySelector('.bottom-nav');
             
-            if (activeBg && bottomNav) {
-                // Calculate position with padding compensation
-                const navWidth = bottomNav.offsetWidth - 16; // minus padding
-                const itemWidth = navWidth / navItems.length;
-                const padding = 8; // horizontal padding for tighter fit
+            if (activeBg && navContainer) {
+                const containerRect = navContainer.getBoundingClientRect();
+                const itemRect = item.getBoundingClientRect();
                 
-                activeBg.style.left = `${(index * itemWidth) + padding}px`;
-                activeBg.style.width = `${itemWidth - (padding * 2)}px`;
+                const leftOffset = itemRect.left - containerRect.left;
+                const padding = 6;
+                
+                activeBg.style.left = `${leftOffset + padding}px`;
+                activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
             }
             
             // Scroll to section
@@ -378,16 +381,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const navItems = document.querySelectorAll('.nav-item');
         const index = Array.from(navItems).indexOf(initialActive);
         const activeBg = document.querySelector('.nav-active-bg');
-        const bottomNav = document.querySelector('.bottom-nav');
         
-        if (activeBg && bottomNav) {
-            // Calculate position with padding compensation
-            const navWidth = bottomNav.offsetWidth - 16; // minus padding
-            const itemWidth = navWidth / navItems.length;
-            const padding = 8; // horizontal padding for tighter fit
+        if (activeBg) {
+            // Use flex positioning - calculate actual button position
+            const navContainer = document.querySelector('.bottom-nav');
+            const containerRect = navContainer.getBoundingClientRect();
+            const itemRect = initialActive.getBoundingClientRect();
             
-            activeBg.style.left = `${(index * itemWidth) + padding}px`;
-            activeBg.style.width = `${itemWidth - (padding * 2)}px`;
+            const leftOffset = itemRect.left - containerRect.left;
+            const padding = 6;
+            
+            activeBg.style.left = `${leftOffset + padding}px`;
+            activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
         }
     }
     
