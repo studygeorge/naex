@@ -52,7 +52,7 @@
             :root {
                 --bg-light: #000000;
                 --text-dark: #FFFFFF;
-                --text-gray: #98989E;
+                --text-gray: #8E8E93;
             }
             
             body {
@@ -61,21 +61,26 @@
             }
             
             .header {
-                background: rgba(28, 28, 30, 0.9);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(0, 0, 0, 0.85);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             }
             
             .service-card,
             .portfolio-item,
-            .review-card {
-                background: rgba(28, 28, 30, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+            .review-card,
+            .process-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
             }
             
             .btn-secondary {
-                background: rgba(28, 28, 30, 0.7);
-                border: 2px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.08);
+                border: none;
                 color: #FFFFFF;
+            }
+            
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.12);
             }
             
             .brief-content {
@@ -87,14 +92,35 @@
             .form-group textarea,
             .form-group select {
                 background: rgba(255, 255, 255, 0.05);
-                border: 2px solid rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 color: #FFFFFF;
             }
             
-            .option-btn {
+            .form-group input::placeholder,
+            .form-group textarea::placeholder {
+                color: #8E8E93;
+            }
+            
+            .option-btn,
+            .budget-option {
                 background: rgba(255, 255, 255, 0.05);
-                border: 2px solid rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 color: #FFFFFF;
+            }
+            
+            .option-btn.selected,
+            .budget-option.selected {
+                background: rgba(0, 136, 204, 0.15);
+                border-color: #0A84FF;
+                color: #0A84FF;
+            }
+            
+            .hero::before {
+                background: radial-gradient(circle at 30% 50%, rgba(0, 136, 204, 0.08) 0%, transparent 50%);
+            }
+            
+            .hero::after {
+                background: radial-gradient(circle at 70% 50%, rgba(34, 158, 217, 0.08) 0%, transparent 50%);
             }
         }
         
