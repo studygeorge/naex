@@ -65,12 +65,33 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             }
             
-            .service-card,
-            .portfolio-item,
-            .review-card,
-            .process-card {
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+            .logo {
+                background: linear-gradient(135deg, #0A84FF, #64B5F6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            
+            .header-cta {
+                background: rgba(10, 132, 255, 0.15);
+                color: #0A84FF;
+                border: 1px solid rgba(10, 132, 255, 0.3);
+            }
+            
+            .header-cta:hover {
+                background: rgba(10, 132, 255, 0.25);
+                box-shadow: none;
+            }
+            
+            .btn-primary {
+                background: rgba(10, 132, 255, 0.15);
+                color: #0A84FF;
+                box-shadow: none;
+                border: 1px solid rgba(10, 132, 255, 0.3);
+            }
+            
+            .btn-primary:hover {
+                background: rgba(10, 132, 255, 0.25);
+                box-shadow: none;
             }
             
             .btn-secondary {
@@ -81,6 +102,30 @@
             
             .btn-secondary:hover {
                 background: rgba(255, 255, 255, 0.12);
+            }
+            
+            .hero h1 {
+                background: linear-gradient(135deg, #0A84FF, #64B5F6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            
+            .stat-number {
+                background: linear-gradient(135deg, #0A84FF, #64B5F6);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            
+            .stat-label {
+                color: #8E8E93;
+            }
+            
+            .service-card,
+            .portfolio-item,
+            .review-card,
+            .process-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
             }
             
             .brief-content {
@@ -110,17 +155,17 @@
             
             .option-btn.selected,
             .budget-option.selected {
-                background: rgba(0, 136, 204, 0.15);
+                background: rgba(10, 132, 255, 0.15);
                 border-color: #0A84FF;
                 color: #0A84FF;
             }
             
             .hero::before {
-                background: radial-gradient(circle at 30% 50%, rgba(0, 136, 204, 0.08) 0%, transparent 50%);
+                background: radial-gradient(circle at 30% 50%, rgba(10, 132, 255, 0.05) 0%, transparent 50%);
             }
             
             .hero::after {
-                background: radial-gradient(circle at 70% 50%, rgba(34, 158, 217, 0.08) 0%, transparent 50%);
+                background: radial-gradient(circle at 70% 50%, rgba(100, 181, 246, 0.05) 0%, transparent 50%);
             }
         }
         
