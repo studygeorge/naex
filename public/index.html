@@ -547,43 +547,50 @@
         .portfolio-switcher {
             display: flex;
             justify-content: center;
-            margin: 32px 0 16px;
+            margin: 0 0 24px;
+            padding-top: 40px;
         }
         
         .switcher-container {
             display: inline-flex;
-            background: rgba(0, 136, 204, 0.1);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 50px;
             padding: 4px;
             gap: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .switcher-btn {
-            padding: 10px 24px;
+            padding: 10px 28px;
             border: none;
             background: transparent;
             color: var(--text-gray);
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 50px;
             transition: all 0.3s ease;
             font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .switcher-btn.active {
             background: white;
             color: var(--primary-blue);
-            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.2);
         }
         
         .portfolio-description {
             text-align: center;
             color: var(--text-gray);
             font-size: 15px;
-            margin: 16px auto 32px;
+            margin: 0 auto 32px;
             max-width: 600px;
             line-height: 1.6;
+            padding: 0 24px;
         }
         
         .portfolio-category-section {
@@ -596,7 +603,12 @@
         
         @media (prefers-color-scheme: dark) {
             .switcher-container {
-                background: rgba(255, 255, 255, 0.05);
+                background: rgba(28, 28, 30, 0.8);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .switcher-btn {
+                color: #8E8E93;
             }
             
             .switcher-btn.active {
@@ -1400,16 +1412,11 @@
         <div id="page-portfolio" class="page">
         <!-- Portfolio Section -->
         <section class="section" id="portfolio">
-            <div class="section-header">
-                <h2 class="section-title">Портфолио</h2>
-                <p class="section-subtitle">Реальные проекты с измеримыми результатами</p>
-            </div>
-            
             <!-- Portfolio Switcher -->
             <div class="portfolio-switcher">
                 <div class="switcher-container">
-                    <button class="switcher-btn active" onclick="switchPortfolio('tg')">TG</button>
-                    <button class="switcher-btn" onclick="switchPortfolio('web')">WEB</button>
+                    <button class="switcher-btn active" data-category="tg">TG</button>
+                    <button class="switcher-btn" data-category="web">WEB</button>
                 </div>
             </div>
             

@@ -307,8 +307,10 @@ function switchPortfolio(category) {
     // Update buttons
     document.querySelectorAll('.switcher-btn').forEach(btn => {
         btn.classList.remove('active');
+        if (btn.getAttribute('data-category') === category) {
+            btn.classList.add('active');
+        }
     });
-    event.target.classList.add('active');
     
     // Switch content
     document.querySelectorAll('.portfolio-category-section').forEach(section => {
@@ -316,6 +318,17 @@ function switchPortfolio(category) {
     });
     document.getElementById(`portfolio-${category}`).classList.add('active');
 }
+
+// Initialize portfolio switcher on load
+document.addEventListener('DOMContentLoaded', function() {
+    const switcherButtons = document.querySelectorAll('.switcher-btn');
+    switcherButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            switchPortfolio(category);
+        });
+    });
+});
 
 // News Slider - Auto-change every 15 seconds
 let currentSlide = 0;
