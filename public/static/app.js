@@ -25,7 +25,7 @@ let currentStep = 1;
 function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
-        const headerOffset = 60;
+        const headerOffset = 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -36,6 +36,11 @@ function scrollToSection(sectionId) {
         
         // Update active nav item
         updateActiveNav(sectionId);
+        
+        // Haptic feedback
+        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        }
     }
 }
 
@@ -311,6 +316,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             scrollToSection(targetId);
+        });
+    });
+    
+    // Bottom nav click handlers
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = item.dataset.section;
+            scrollToSection(section);
         });
     });
     
