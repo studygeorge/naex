@@ -94,7 +94,7 @@
         /* Main Content */
         .main-content {
             margin-top: 60px;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
         
         /* Hero Section */
@@ -151,6 +151,10 @@
             font-weight: 700;
             margin-bottom: 24px;
             line-height: 1.2;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .hero p {
@@ -482,18 +486,22 @@
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 136, 204, 0.1);
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.12),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0 16px;
+            padding: 0 8px;
             z-index: 1000;
         }
         
@@ -504,15 +512,28 @@
             gap: 4px;
             color: var(--text-gray);
             text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 16px;
+            border-radius: 16px;
             cursor: pointer;
+            position: relative;
         }
         
         .nav-item.active {
             color: var(--primary-blue);
-            background: rgba(0, 136, 204, 0.1);
+            background: rgba(0, 136, 204, 0.15);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 2px;
         }
         
         .nav-item span.material-icons-round {
@@ -742,11 +763,9 @@
                 
                 <div class="cta-buttons">
                     <button class="btn-primary" onclick="openBrief()">
-                        <span class="material-icons-round">rocket_launch</span>
                         Начать проект
                     </button>
                     <button class="btn-secondary" onclick="scrollToSection('portfolio')">
-                        <span class="material-icons-round">visibility</span>
                         Портфолио
                     </button>
                 </div>
