@@ -327,12 +327,6 @@ function showSlide(index) {
             dot.classList.add('active');
         }
     });
-    
-    // Update track position
-    const track = document.querySelector('.news-slider-track');
-    if (track) {
-        track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
 }
 
 function nextSlide() {
