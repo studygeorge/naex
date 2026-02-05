@@ -1,317 +1,607 @@
-// Компонентная архитектура приложения
-class App {
-  constructor() {
-    this.state = {
-      services: [
+// Telegram WebApp Integration
+let tg = window.Telegram?.WebApp;
+if (tg) {
+    tg.ready();
+    tg.expand();
+    tg.enableClosingConfirmation();
+}
+
+// App State
+const app = {
+    state: {
+        selectedFeatures: new Set(),
+        totalPrice: 0,
+        userData: {},
+        step: 1
+    },
+    
+    features: [
         {
-          icon: 'fas fa-shopping-cart',
-          title: 'Боты для e-commerce',
-          description: 'Автоматизация продаж через Telegram. Каталог товаров, корзина, оплата и доставка.',
-          features: ['Прием платежей', 'Интеграция с CRM', 'Управление заказами']
+            id: 'catalog',
+            icon: '🛍️',
+            title: 'Каталог товаров',
+            description: 'Показ товаров с фото, ценами и фильтрами',
+            price: 15000,
+            category: 'ecommerce'
         },
         {
-          icon: 'fas fa-calendar-check',
-          title: 'Системы бронирования',
-          description: 'Запись на услуги, бронирование столиков, управление расписанием.',
-          features: ['Календарь записи', 'Напоминания', 'Отмена/перенос']
+            id: 'cart',
+            icon: '🛒',
+            title: 'Корзина и заказы',
+            description: 'Управление заказами и история покупок',
+            price: 12000,
+            category: 'ecommerce'
         },
         {
-          icon: 'fas fa-headset',
-          title: 'Служба поддержки',
-          description: 'Автоматизация обработки обращений клиентов, FAQ, тикет-система.',
-          features: ['База знаний', 'Приоритеты', 'Аналитика']
+            id: 'payment',
+            icon: '💳',
+            title: 'Прием платежей',
+            description: 'Онлайн-оплата через YooKassa, Stripe',
+            price: 8000,
+            category: 'ecommerce'
         },
         {
-          icon: 'fas fa-chart-line',
-          title: 'CRM интеграция',
-          description: 'Подключение к вашей CRM системе для синхронизации данных клиентов.',
-          features: ['API интеграция', 'Синхронизация', 'Автоматизация']
+            id: 'booking',
+            icon: '📅',
+            title: 'Бронирование',
+            description: 'Запись на услуги с календарем',
+            price: 18000,
+            category: 'services'
         },
         {
-          icon: 'fas fa-bell',
-          title: 'Рассылки и уведомления',
-          description: 'Массовые рассылки, персонализированные сообщения, триггерные уведомления.',
-          features: ['Сегментация', 'Аналитика', 'A/B тесты']
+            id: 'crm',
+            icon: '👥',
+            title: 'CRM интеграция',
+            description: 'Синхронизация с вашей системой',
+            price: 25000,
+            category: 'integration'
         },
         {
-          icon: 'fas fa-cog',
-          title: 'Кастомная разработка',
-          description: 'Индивидуальная разработка под уникальные задачи вашего бизнеса.',
-          features: ['Любая сложность', 'Полный цикл', 'Гарантия']
+            id: 'support',
+            icon: '💬',
+            title: 'Поддержка клиентов',
+            description: 'Автоответы и передача оператору',
+            price: 10000,
+            category: 'support'
+        },
+        {
+            id: 'notifications',
+            icon: '🔔',
+            title: 'Рассылки',
+            description: 'Массовые и персональные уведомления',
+            price: 7000,
+            category: 'marketing'
+        },
+        {
+            id: 'analytics',
+            icon: '📊',
+            title: 'Аналитика',
+            description: 'Статистика продаж и поведения пользователей',
+            price: 9000,
+            category: 'analytics'
+        },
+        {
+            id: 'loyalty',
+            icon: '🎁',
+            title: 'Программа лояльности',
+            description: 'Баллы, скидки и промокоды',
+            price: 12000,
+            category: 'marketing'
         }
-      ],
-      portfolio: [
+    ],
+    
+    portfolio: [
         {
-          title: 'Бот для ресторана',
-          category: 'Бронирование',
-          image: 'fas fa-utensils',
-          stats: '500+ заказов/день',
-          description: 'Система бронирования столиков с интеграцией в учетную систему'
+            title: 'Бот для ресторана',
+            image: '🍽️',
+            category: 'Бронирование',
+            metrics: {
+                orders: '500+/день',
+                conversion: '+85%',
+                roi: '320%'
+            },
+            features: ['Бронирование столов', 'Меню и заказы', 'Программа лояльности'],
+            description: 'Автоматизация бронирования и доставки для сети из 5 ресторанов'
         },
         {
-          title: 'Интернет-магазин одежды',
-          category: 'E-commerce',
-          image: 'fas fa-tshirt',
-          stats: '1M+ оборот/мес',
-          description: 'Полноценный магазин с каталогом, корзиной и приемом платежей'
+            title: 'Интернет-магазин одежды',
+            image: '👔',
+            category: 'E-commerce',
+            metrics: {
+                revenue: '₽2.4M/мес',
+                orders: '1200+',
+                growth: '+145%'
+            },
+            features: ['Каталог 500+ товаров', 'Онлайн-оплата', 'Доставка и трекинг'],
+            description: 'Полноценный магазин с автоматизацией от заказа до доставки'
         },
         {
-          title: 'Бот для фитнес-клуба',
-          category: 'Услуги',
-          image: 'fas fa-dumbbell',
-          stats: '300+ клиентов',
-          description: 'Запись на тренировки, продление абонементов, расписание'
+            title: 'Фитнес-клуб Premium',
+            image: '💪',
+            category: 'Услуги',
+            metrics: {
+                clients: '800+',
+                bookings: '95%',
+                retention: '+68%'
+            },
+            features: ['Запись на тренировки', 'Абонементы', 'Персональная программа'],
+            description: 'Система записи и управления клиентами для сети фитнес-клубов'
         },
         {
-          title: 'Служба техподдержки',
-          category: 'Поддержка',
-          image: 'fas fa-headset',
-          stats: '95% автоматизации',
-          description: 'Автоматическая обработка типовых обращений пользователей'
-        },
-        {
-          title: 'Бот для автосервиса',
-          category: 'Бронирование',
-          image: 'fas fa-car',
-          stats: '200+ записей/мес',
-          description: 'Запись на ремонт, калькулятор стоимости, история обслуживания'
-        },
-        {
-          title: 'CRM для агентства',
-          category: 'Бизнес',
-          image: 'fas fa-briefcase',
-          stats: '50+ пользователей',
-          description: 'Управление клиентами, сделками и задачами через Telegram'
+            title: 'Автосервис 24/7',
+            image: '🚗',
+            category: 'Бронирование',
+            metrics: {
+                bookings: '350/мес',
+                automation: '90%',
+                satisfaction: '4.8/5'
+            },
+            features: ['Онлайн-запись', 'Калькулятор услуг', 'История обслуживания'],
+            description: 'Автоматизация записи и уведомлений для автосервиса'
         }
-      ],
-      pricing: [
-        {
-          name: 'Старт',
-          price: '15 000',
-          period: 'разовый платеж',
-          features: [
-            'Базовый функционал',
-            'До 5 команд',
-            'Простая админ-панель',
-            'База данных',
-            'Документация',
-            '1 месяц поддержки'
-          ],
-          popular: false
-        },
-        {
-          name: 'Бизнес',
-          price: '35 000',
-          period: 'разовый платеж',
-          features: [
-            'Расширенный функционал',
-            'Неограниченные команды',
-            'Продвинутая админ-панель',
-            'Интеграция с API',
-            'Прием платежей',
-            'Аналитика',
-            '3 месяца поддержки'
-          ],
-          popular: true
-        },
-        {
-          name: 'Энтерпрайз',
-          price: 'от 70 000',
-          period: 'индивидуально',
-          features: [
-            'Любая сложность',
-            'Интеграция с CRM',
-            'Масштабирование',
-            'Выделенный сервер',
-            'Приоритетная поддержка',
-            'SLA гарантии',
-            'Год поддержки'
-          ],
-          popular: false
-        }
-      ]
-    };
+    ],
     
-    this.init();
-  }
-
-  init() {
-    this.renderServices();
-    this.renderPortfolio();
-    this.renderPricing();
-    this.setupFormHandler();
-    this.setupScrollAnimations();
-  }
-
-  renderServices() {
-    const grid = document.getElementById('services-grid');
-    if (!grid) return;
+    init() {
+        this.renderFeatures();
+        this.renderCalculator();
+        this.renderPortfolio();
+        this.setupEventListeners();
+        this.initTelegramWebApp();
+    },
     
-    grid.innerHTML = this.state.services.map(service => `
-      <div class="bg-dark-card border border-gray-700 rounded-xl p-6 hover:border-primary transition transform hover:-translate-y-2 duration-300 animate-scale-in">
-        <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-          <i class="${service.icon} text-3xl text-primary"></i>
-        </div>
-        <h3 class="text-xl font-bold mb-3">${service.title}</h3>
-        <p class="text-gray-400 mb-4">${service.description}</p>
-        <ul class="space-y-2">
-          ${service.features.map(feature => `
-            <li class="flex items-center text-sm text-gray-300">
-              <i class="fas fa-check text-primary mr-2"></i>
-              ${feature}
-            </li>
-          `).join('')}
-        </ul>
-      </div>
-    `).join('');
-  }
-
-  renderPortfolio() {
-    const grid = document.getElementById('portfolio-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = this.state.portfolio.map((project, index) => `
-      <div class="bg-dark-card border border-gray-700 rounded-xl overflow-hidden hover:border-primary transition transform hover:-translate-y-2 duration-300" style="animation-delay: ${index * 0.1}s">
-        <div class="bg-gradient-to-br from-primary/20 to-secondary/20 h-48 flex items-center justify-center">
-          <i class="${project.image} text-6xl text-primary"></i>
-        </div>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">${project.category}</span>
-            <span class="text-xs text-gray-400">${project.stats}</span>
-          </div>
-          <h3 class="text-xl font-bold mb-2">${project.title}</h3>
-          <p class="text-gray-400 text-sm">${project.description}</p>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  renderPricing() {
-    const grid = document.getElementById('pricing-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = this.state.pricing.map((plan, index) => `
-      <div class="bg-dark-card border ${plan.popular ? 'border-primary' : 'border-gray-700'} rounded-xl p-8 hover:border-primary transition transform hover:-translate-y-2 duration-300 relative" style="animation-delay: ${index * 0.1}s">
-        ${plan.popular ? '<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary px-4 py-1 rounded-full text-sm font-bold">Популярный</div>' : ''}
-        <h3 class="text-2xl font-bold mb-2">${plan.name}</h3>
-        <div class="mb-6">
-          <span class="text-4xl font-bold text-primary">${plan.price}</span>
-          <span class="text-gray-400 text-sm ml-2">₽</span>
-          <div class="text-gray-400 text-sm mt-1">${plan.period}</div>
-        </div>
-        <ul class="space-y-3 mb-8">
-          ${plan.features.map(feature => `
-            <li class="flex items-start text-sm text-gray-300">
-              <i class="fas fa-check text-primary mr-3 mt-1"></i>
-              <span>${feature}</span>
-            </li>
-          `).join('')}
-        </ul>
-        <button onclick="scrollToContact()" class="w-full ${plan.popular ? 'bg-primary hover:bg-secondary' : 'border border-gray-600 hover:border-primary'} px-6 py-3 rounded-lg transition">
-          Выбрать план
-        </button>
-      </div>
-    `).join('');
-  }
-
-  setupFormHandler() {
-    const form = document.getElementById('contact-form');
-    const message = document.getElementById('form-message');
-    
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      
-      // Валидация
-      if (!this.validateForm(data)) {
-        this.showMessage('Пожалуйста, заполните все обязательные поля', 'error');
-        return;
-      }
-
-      try {
-        // Показываем загрузку
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Отправка...';
-        submitBtn.disabled = true;
-
-        const response = await axios.post('/api/requests', data);
+    renderFeatures() {
+        const grid = document.getElementById('features-grid');
+        if (!grid) return;
         
-        if (response.data.success) {
-          this.showMessage('Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
-          form.reset();
+        const topFeatures = this.features.slice(0, 6);
+        grid.innerHTML = topFeatures.map(feature => `
+            <div class="card">
+                <div class="card-icon">${feature.icon}</div>
+                <h3 class="card-title">${feature.title}</h3>
+                <p class="card-description">${feature.description}</p>
+                <div style="margin-top: 16px; color: var(--primary); font-weight: 600;">
+                    от ${feature.price.toLocaleString('ru')} ₽
+                </div>
+            </div>
+        `).join('');
+    },
+    
+    renderCalculator() {
+        const container = document.getElementById('calculator-container');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div class="card" style="padding: 40px;">
+                    <div id="calculator-features" style="margin-bottom: 40px;">
+                        <div style="display: grid; gap: 16px;">
+                            ${this.features.map(feature => `
+                                <label class="feature-option" data-feature-id="${feature.id}">
+                                    <input type="checkbox" class="feature-checkbox" value="${feature.id}">
+                                    <div class="feature-content">
+                                        <div class="feature-header">
+                                            <span class="feature-icon">${feature.icon}</span>
+                                            <div class="feature-info">
+                                                <div class="feature-title">${feature.title}</div>
+                                                <div class="feature-description">${feature.description}</div>
+                                            </div>
+                                        </div>
+                                        <div class="feature-price">${feature.price.toLocaleString('ru')} ₽</div>
+                                    </div>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="calculator-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Выбрано функций:</span>
+                            <span class="summary-value" id="selected-count">0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Итоговая стоимость:</span>
+                            <span class="summary-total" id="total-price">0 ₽</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Срок разработки:</span>
+                            <span class="summary-value" id="development-time">7-10 дней</span>
+                        </div>
+                        <button class="btn btn-primary" id="order-btn" style="width: 100%; margin-top: 24px; padding: 16px;" disabled>
+                            Оставить заявку
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card" id="order-form" style="display: none; margin-top: 24px; padding: 40px;">
+                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Оформление заявки</h3>
+                    <form id="request-form">
+                        <div style="display: grid; gap: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Ваше имя *</label>
+                                <input type="text" name="name" required 
+                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
+                                    onfocus="this.style.borderColor='var(--primary)'"
+                                    onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email *</label>
+                                <input type="email" name="email" required 
+                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
+                                    onfocus="this.style.borderColor='var(--primary)'"
+                                    onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Telegram</label>
+                                <input type="text" name="telegram" placeholder="@username" 
+                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
+                                    onfocus="this.style.borderColor='var(--primary)'"
+                                    onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Телефон</label>
+                                <input type="tel" name="phone" placeholder="+7" 
+                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; transition: border-color 0.3s;"
+                                    onfocus="this.style.borderColor='var(--primary)'"
+                                    onblur="this.style.borderColor='var(--border)'">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Комментарий</label>
+                                <textarea name="description" rows="4" placeholder="Расскажите подробнее о вашем проекте..."
+                                    style="width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; resize: vertical; transition: border-color 0.3s;"
+                                    onfocus="this.style.borderColor='var(--primary)'"
+                                    onblur="this.style.borderColor='var(--border)'"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 16px;">
+                                Отправить заявку
+                            </button>
+                        </div>
+                    </form>
+                    <div id="form-message" style="margin-top: 20px; display: none;"></div>
+                </div>
+            </div>
+            
+            <style>
+                .feature-option {
+                    display: block;
+                    cursor: pointer;
+                    padding: 20px;
+                    border: 2px solid var(--border);
+                    border-radius: 16px;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                
+                .feature-option:hover {
+                    border-color: var(--primary);
+                    background: rgba(0, 136, 204, 0.02);
+                }
+                
+                .feature-checkbox {
+                    display: none;
+                }
+                
+                .feature-checkbox:checked + .feature-content {
+                    border-left: 4px solid var(--primary);
+                    padding-left: 16px;
+                }
+                
+                .feature-option:has(.feature-checkbox:checked) {
+                    border-color: var(--primary);
+                    background: rgba(0, 136, 204, 0.05);
+                }
+                
+                .feature-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                    transition: all 0.3s;
+                }
+                
+                .feature-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    flex: 1;
+                }
+                
+                .feature-icon {
+                    font-size: 32px;
+                    flex-shrink: 0;
+                }
+                
+                .feature-info {
+                    flex: 1;
+                }
+                
+                .feature-title {
+                    font-weight: 600;
+                    font-size: 16px;
+                    margin-bottom: 4px;
+                }
+                
+                .feature-description {
+                    font-size: 14px;
+                    color: var(--text-secondary);
+                }
+                
+                .feature-price {
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: var(--primary);
+                    flex-shrink: 0;
+                }
+                
+                .calculator-summary {
+                    padding: 24px;
+                    background: var(--bg-secondary);
+                    border-radius: 16px;
+                }
+                
+                .summary-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 12px 0;
+                    border-bottom: 1px solid var(--border);
+                }
+                
+                .summary-row:last-of-type {
+                    border-bottom: none;
+                }
+                
+                .summary-label {
+                    font-size: 15px;
+                    color: var(--text-secondary);
+                }
+                
+                .summary-value {
+                    font-weight: 600;
+                    font-size: 16px;
+                }
+                
+                .summary-total {
+                    font-weight: 800;
+                    font-size: 28px;
+                    color: var(--primary);
+                }
+                
+                @media (max-width: 768px) {
+                    .feature-content {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+                    
+                    .feature-price {
+                        align-self: flex-end;
+                    }
+                }
+            </style>
+        `;
+        
+        this.setupCalculatorListeners();
+    },
+    
+    renderPortfolio() {
+        const grid = document.getElementById('portfolio-grid');
+        if (!grid) return;
+        
+        grid.innerHTML = this.portfolio.map(project => `
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 60px 32px; text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 16px;">${project.image}</div>
+                    <span style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                        ${project.category}
+                    </span>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">${project.title}</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">${project.description}</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                        ${Object.entries(project.metrics).map(([key, value]) => `
+                            <div style="text-align: center; padding: 12px; background: var(--bg-secondary); border-radius: 12px;">
+                                <div style="font-weight: 700; color: var(--primary);">${value}</div>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">${key}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${project.features.map(feature => `
+                            <span style="background: var(--bg-secondary); padding: 6px 12px; border-radius: 8px; font-size: 13px;">
+                                ${feature}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    },
+    
+    setupCalculatorListeners() {
+        const checkboxes = document.querySelectorAll('.feature-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                this.updateCalculator();
+                if (tg) tg.HapticFeedback.selectionChanged();
+            });
+        });
+        
+        const orderBtn = document.getElementById('order-btn');
+        orderBtn?.addEventListener('click', () => {
+            this.showOrderForm();
+        });
+    },
+    
+    updateCalculator() {
+        const checkboxes = document.querySelectorAll('.feature-checkbox:checked');
+        const selectedIds = Array.from(checkboxes).map(cb => cb.value);
+        
+        this.state.selectedFeatures = new Set(selectedIds);
+        const selectedCount = selectedIds.length;
+        
+        let totalPrice = 0;
+        selectedIds.forEach(id => {
+            const feature = this.features.find(f => f.id === id);
+            if (feature) totalPrice += feature.price;
+        });
+        
+        this.state.totalPrice = totalPrice;
+        
+        // Обновление UI
+        document.getElementById('selected-count').textContent = selectedCount;
+        document.getElementById('total-price').textContent = totalPrice.toLocaleString('ru') + ' ₽';
+        
+        // Срок разработки
+        let devTime = '7-10 дней';
+        if (selectedCount >= 5) devTime = '14-21 день';
+        else if (selectedCount >= 3) devTime = '10-14 дней';
+        document.getElementById('development-time').textContent = devTime;
+        
+        // Кнопка заказа
+        const orderBtn = document.getElementById('order-btn');
+        if (selectedCount > 0) {
+            orderBtn.disabled = false;
+            orderBtn.textContent = `Оформить за ${totalPrice.toLocaleString('ru')} ₽`;
         } else {
-          throw new Error(response.data.error);
+            orderBtn.disabled = true;
+            orderBtn.textContent = 'Выберите функции';
         }
+    },
+    
+    showOrderForm() {
+        const form = document.getElementById('order-form');
+        if (form) {
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (tg) tg.HapticFeedback.impactOccurred('medium');
+        }
+    },
+    
+    setupEventListeners() {
+        const form = document.getElementById('request-form');
+        form?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await this.handleFormSubmit(e.target);
+        });
         
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      } catch (error) {
-        this.showMessage('Ошибка при отправке заявки. Попробуйте позже или свяжитесь с нами напрямую.', 'error');
-        console.error('Form submission error:', error);
+        // Smooth scroll для ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    },
+    
+    async handleFormSubmit(form) {
+        const formData = new FormData(form);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            telegram: formData.get('telegram'),
+            project_type: 'custom',
+            budget: `${this.state.totalPrice}`,
+            description: `Выбранные функции: ${Array.from(this.state.selectedFeatures).join(', ')}. ${formData.get('description') || ''}`
+        };
         
         const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Отправить заявку';
-        submitBtn.disabled = false;
-      }
-    });
-  }
-
-  validateForm(data) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    if (!data.name || data.name.trim().length < 2) return false;
-    if (!data.email || !emailRegex.test(data.email)) return false;
-    if (!data.project_type) return false;
-    if (!data.description || data.description.trim().length < 10) return false;
-    
-    return true;
-  }
-
-  showMessage(text, type) {
-    const message = document.getElementById('form-message');
-    if (!message) return;
-    
-    message.className = `mt-4 p-4 rounded-lg ${type === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500' : 'bg-red-500/20 text-red-400 border border-red-500'}`;
-    message.textContent = text;
-    message.classList.remove('hidden');
-    
-    setTimeout(() => {
-      message.classList.add('hidden');
-    }, 5000);
-  }
-
-  setupScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-slide-up');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+        
+        try {
+            const response = await fetch('/api/requests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.showMessage('Заявка успешно отправлена! Мы свяжемся с вами в течение часа.', 'success');
+                form.reset();
+                if (tg) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                    tg.showAlert('Спасибо! Ваша заявка принята.');
+                }
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.showMessage('Ошибка отправки. Попробуйте позже или свяжитесь напрямую.', 'error');
+            if (tg) tg.HapticFeedback.notificationOccurred('error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         }
-      });
-    }, { threshold: 0.1 });
+    },
+    
+    showMessage(text, type) {
+        const messageEl = document.getElementById('form-message');
+        if (!messageEl) return;
+        
+        messageEl.textContent = text;
+        messageEl.style.display = 'block';
+        messageEl.style.padding = '16px';
+        messageEl.style.borderRadius = '12px';
+        messageEl.style.fontWeight = '600';
+        
+        if (type === 'success') {
+            messageEl.style.background = '#E8F5E9';
+            messageEl.style.color = '#2E7D32';
+            messageEl.style.border = '2px solid #4CAF50';
+        } else {
+            messageEl.style.background = '#FFEBEE';
+            messageEl.style.color = '#C62828';
+            messageEl.style.border = '2px solid #F44336';
+        }
+        
+        setTimeout(() => {
+            messageEl.style.display = 'none';
+        }, 5000);
+    },
+    
+    initTelegramWebApp() {
+        if (!tg) return;
+        
+        // Получаем данные пользователя из Telegram
+        if (tg.initDataUnsafe?.user) {
+            const user = tg.initDataUnsafe.user;
+            this.state.userData = {
+                telegram_id: user.id,
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name
+            };
+            
+            // Автозаполнение формы
+            const nameInput = document.querySelector('input[name="name"]');
+            const telegramInput = document.querySelector('input[name="telegram"]');
+            
+            if (nameInput && user.first_name) {
+                nameInput.value = `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`;
+            }
+            
+            if (telegramInput && user.username) {
+                telegramInput.value = `@${user.username}`;
+            }
+        }
+        
+        // Настройка темы
+        if (tg.themeParams) {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#ffffff');
+            document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#000000');
+            document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color || '#0088cc');
+        }
+    }
+};
 
-    document.querySelectorAll('section').forEach(section => {
-      observer.observe(section);
-    });
-  }
-}
-
-// Утилиты для прокрутки
-function scrollToContact() {
-  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-}
-
-function scrollToPortfolio() {
-  document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Инициализация при загрузке DOM
+// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', () => {
-  new App();
-  console.log('TeleBotAgency App initialized');
+    app.init();
+    console.log('NaexAgency App initialized');
 });

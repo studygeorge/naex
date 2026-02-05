@@ -43,6 +43,11 @@ app.use(express.static(path.join(__dirname, '../public')))
 
 // Главная страница
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
+// Старая версия HTML (резерв)
+app.get('/old', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html lang="ru">
