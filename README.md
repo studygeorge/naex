@@ -1,21 +1,192 @@
-```txt
-npm install
-npm run dev
+# TeleBotAgency - Веб-агентство по разработке Telegram ботов
+
+## Описание проекта
+Профессиональный сайт веб-агентства, специализирующегося на разработке Telegram ботов для бизнеса. Современный дизайн, высокая производительность, полная интеграция с базой данных.
+
+## URLs
+- **Production**: https://3000-i4h6c7sfr7xbb1vj4az47-6532622b.e2b.dev
+- **API Base**: https://3000-i4h6c7sfr7xbb1vj4az47-6532622b.e2b.dev/api
+
+## Технологический стек
+- **Backend**: Hono (TypeScript) - легковесный, быстрый фреймворк
+- **Frontend**: Vanilla JS с компонентной архитектурой
+- **Стилизация**: TailwindCSS + кастомные анимации
+- **База данных**: Cloudflare D1 (SQLite)
+- **Деплой**: Cloudflare Pages (edge-сеть)
+- **Process Manager**: PM2
+
+## Архитектура данных
+
+### Модели данных
+
+**Таблица requests (заявки):**
+- `id` - уникальный идентификатор
+- `name` - имя клиента
+- `email` - email клиента
+- `phone` - телефон (опционально)
+- `telegram` - Telegram username (опционально)
+- `project_type` - тип проекта (shop/crm/booking/support/custom)
+- `budget` - бюджет проекта
+- `description` - описание проекта
+- `status` - статус заявки (new/processing/completed/cancelled)
+- `created_at` - дата создания
+
+**Таблица contacts (контактные сообщения):**
+- `id` - уникальный идентификатор
+- `name` - имя отправителя
+- `email` - email отправителя
+- `message` - текст сообщения
+- `created_at` - дата создания
+
+### API Endpoints
+
+**Заявки:**
+- `GET /api/requests` - получить все заявки
+- `POST /api/requests` - создать новую заявку
+- `GET /api/requests/:id` - получить заявку по ID
+- `PATCH /api/requests/:id/status` - обновить статус заявки
+
+**Контакты:**
+- `GET /api/contacts` - получить все сообщения
+- `POST /api/contacts` - отправить новое сообщение
+
+### Хранилище
+- **Cloudflare D1**: Основная база данных для хранения заявок и сообщений
+- **Локальная разработка**: SQLite в `.wrangler/state/v3/d1`
+
+## Основные функции
+
+### Реализованные возможности
+- Hero-секция с анимациями и статистикой
+- Блок услуг с 6 категориями (e-commerce, бронирование, CRM и т.д.)
+- Портфолио с 6 реализованными проектами
+- Три тарифных плана (Старт, Бизнес, Энтерпрайз)
+- Контактная форма с валидацией
+- API для приема заявок и сообщений
+- Адаптивный дизайн для всех устройств
+- Плавные анимации и переходы
+- SEO-оптимизированная структура
+
+### Особенности UI/UX
+- Темная цветовая схема
+- Градиенты и свечения
+- Анимации появления элементов
+- Hover-эффекты на карточках
+- Плавная прокрутка между секциями
+- Кастомные скроллбары
+- Адаптивная навигация
+
+## Структура проекта
+```
+webapp/
+├── src/
+│   ├── index.tsx              # Главный файл приложения Hono
+│   └── routes/
+│       ├── requests.ts        # API роуты для заявок
+│       └── contacts.ts        # API роуты для контактов
+├── public/
+│   └── static/
+│       ├── app.js             # Клиентский JavaScript
+│       └── style.css          # Кастомные стили
+├── migrations/
+│   └── 0001_initial_schema.sql # Схема базы данных
+├── dist/                       # Собранные файлы (создается при build)
+├── ecosystem.config.cjs        # Конфигурация PM2
+├── wrangler.jsonc             # Конфигурация Cloudflare
+├── package.json               # Зависимости и скрипты
+└── README.md                  # Документация
 ```
 
-```txt
-npm run deploy
+## Команды для разработки
+
+### Локальная разработка
+```bash
+# Сборка проекта
+npm run build
+
+# Применить миграции к локальной БД
+npm run db:migrate:local
+
+# Запуск сервера разработки
+pm2 start ecosystem.config.cjs
+
+# Проверка статуса
+pm2 list
+
+# Просмотр логов
+pm2 logs webapp --nostream
+
+# Перезапуск
+fuser -k 3000/tcp && pm2 restart webapp
+
+# Остановка
+pm2 delete webapp
 ```
 
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
+### База данных
+```bash
+# Применить миграции локально
+npm run db:migrate:local
 
-```txt
-npm run cf-typegen
+# Консоль базы данных
+npm run db:console:local
+
+# Применить миграции в production
+npm run db:migrate:prod
 ```
 
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
+### Деплой
+```bash
+# Сборка и деплой в Cloudflare Pages
+npm run deploy:prod
 
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+# Требуется предварительно:
+# 1. Настроить CLOUDFLARE_API_TOKEN
+# 2. Создать production D1 базу: npx wrangler d1 create webapp-production
+# 3. Применить миграции: npm run db:migrate:prod
 ```
+
+## Возможности для расширения
+
+### Рекомендуемые улучшения
+1. **Админ-панель** для управления заявками
+2. **Email уведомления** при получении новых заявок
+3. **Telegram Bot** для уведомлений команды
+4. **Статистика и аналитика** по заявкам
+5. **Блог** с кейсами и статьями
+6. **Калькулятор стоимости** проекта
+7. **Онлайн-чат** с поддержкой
+8. **Многоязычность** (EN/RU)
+
+### Планируемая интеграция
+- Stripe/PayPal для приема платежей
+- SendGrid для email-рассылок
+- Google Analytics для аналитики
+- Telegram Bot API для уведомлений
+
+## Производительность
+- Edge-развертывание через Cloudflare Pages
+- Глобальная CDN для статики
+- Оптимизированная база данных D1
+- Минимальный размер бандла
+- Lazy loading изображений
+- CSS/JS оптимизация
+
+## Безопасность
+- CORS настроен для API
+- Валидация всех входящих данных
+- SQL-инъекции защищены через prepared statements
+- Email валидация на клиенте и сервере
+- Rate limiting (рекомендуется добавить)
+
+## Статус развертывания
+- **Платформа**: Cloudflare Pages (готово к деплою)
+- **Статус разработки**: Активная разработка
+- **Локальный сервер**: Запущен на порту 3000
+- **База данных**: D1 (локальная миграция применена)
+- **Последнее обновление**: 2026-02-05
+
+## Контакты
+- Email: info@telebotag.ru
+- Telegram: @telebotag
+- Телефон: +7 (999) 123-45-67
