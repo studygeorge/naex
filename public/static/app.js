@@ -297,6 +297,26 @@ function scrollToSection(section) {
     switchPage(section);
 }
 
+// Portfolio switcher
+function switchPortfolio(category) {
+    // Haptic feedback
+    if (tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
+    
+    // Update buttons
+    document.querySelectorAll('.switcher-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Switch content
+    document.querySelectorAll('.portfolio-category-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.getElementById(`portfolio-${category}`).classList.add('active');
+}
+
 // News Slider - Auto-change every 15 seconds
 let currentSlide = 0;
 let slideInterval;
