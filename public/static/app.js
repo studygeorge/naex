@@ -331,9 +331,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Bottom nav click handlers
     document.querySelectorAll('.nav-item').forEach((item, index) => {
-        item.addEventListener('click', (e) => {
+        // Use touchstart for better mobile/Telegram support
+        const eventType = 'ontouchstart' in window ? 'touchstart' : 'click';
+        
+        item.addEventListener(eventType, (e) => {
             e.preventDefault();
+            e.stopPropagation();
+            
             const section = item.dataset.section;
+            
+            // Haptic feedback
+            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+                Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+            }
             
             // Update active state and animate background
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
