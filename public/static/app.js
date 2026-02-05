@@ -45,10 +45,20 @@ function scrollToSection(sectionId) {
 }
 
 function updateActiveNav(sectionId) {
-    document.querySelectorAll('.nav-item').forEach(item => {
+    const navItems = document.querySelectorAll('.nav-item');
+    const activeBg = document.querySelector('.nav-active-bg');
+    
+    navItems.forEach((item, index) => {
         item.classList.remove('active');
         if (item.dataset.section === sectionId) {
             item.classList.add('active');
+            
+            // Animate active background to the position
+            if (activeBg) {
+                const itemWidth = 100 / navItems.length;
+                activeBg.style.left = `${index * itemWidth}%`;
+                activeBg.style.width = `${itemWidth}%`;
+            }
         }
     });
 }
@@ -320,13 +330,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Bottom nav click handlers
-    document.querySelectorAll('.nav-item').forEach(item => {
+    document.querySelectorAll('.nav-item').forEach((item, index) => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             const section = item.dataset.section;
+            
+            // Update active state and animate background
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            const activeBg = document.querySelector('.nav-active-bg');
+            const itemWidth = 100 / document.querySelectorAll('.nav-item').length;
+            if (activeBg) {
+                activeBg.style.left = `${index * itemWidth}%`;
+                activeBg.style.width = `${itemWidth}%`;
+            }
+            
+            // Scroll to section
             scrollToSection(section);
         });
     });
+    
+    // Initialize active background position
+    const initialActive = document.querySelector('.nav-item.active');
+    if (initialActive) {
+        const navItems = document.querySelectorAll('.nav-item');
+        const index = Array.from(navItems).indexOf(initialActive);
+        const activeBg = document.querySelector('.nav-active-bg');
+        const itemWidth = 100 / navItems.length;
+        if (activeBg) {
+            activeBg.style.left = `${index * itemWidth}%`;
+            activeBg.style.width = `${itemWidth}%`;
+        }
+    }
     
     // Animate elements on load
     setTimeout(() => {

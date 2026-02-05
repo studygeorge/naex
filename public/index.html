@@ -574,18 +574,31 @@
             gap: 4px;
             color: #8E8E93;
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 8px 12px;
+            transition: color 0.3s ease;
+            padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             position: relative;
             flex: 1;
             min-width: 0;
+            z-index: 1;
         }
         
         .nav-item.active {
             color: var(--primary-blue);
+        }
+        
+        /* Active indicator background */
+        .nav-active-bg {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 0;
+            width: 25%;
             background: rgba(0, 136, 204, 0.12);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
         }
         
         @media (prefers-color-scheme: dark) {
@@ -595,6 +608,9 @@
             
             .nav-item.active {
                 color: #0A84FF;
+            }
+            
+            .nav-active-bg {
                 background: rgba(10, 132, 255, 0.15);
             }
         }
@@ -1071,19 +1087,20 @@
     
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a class="nav-item active" data-section="home" onclick="scrollToSection('home')">
+        <div class="nav-active-bg"></div>
+        <a class="nav-item active" data-section="home">
             <span class="material-icons-round">home</span>
             <span class="nav-label">Главная</span>
         </a>
-        <a class="nav-item" data-section="services" onclick="scrollToSection('services')">
+        <a class="nav-item" data-section="services">
             <span class="material-icons-round">build</span>
             <span class="nav-label">Услуги</span>
         </a>
-        <a class="nav-item" data-section="portfolio" onclick="scrollToSection('portfolio')">
+        <a class="nav-item" data-section="portfolio">
             <span class="material-icons-round">work</span>
             <span class="nav-label">Портфолио</span>
         </a>
-        <a class="nav-item" data-section="contact" onclick="scrollToSection('contact')">
+        <a class="nav-item" data-section="contact">
             <span class="material-icons-round">mail</span>
             <span class="nav-label">Контакты</span>
         </a>
