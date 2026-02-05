@@ -18,7 +18,7 @@ const app = {
     features: [
         {
             id: 'catalog',
-            icon: '🛍️',
+            icon: 'shopping_bag',
             title: 'Каталог товаров',
             description: 'Показ товаров с фото, ценами и фильтрами',
             price: 15000,
@@ -26,7 +26,7 @@ const app = {
         },
         {
             id: 'cart',
-            icon: '🛒',
+            icon: 'shopping_cart',
             title: 'Корзина и заказы',
             description: 'Управление заказами и история покупок',
             price: 12000,
@@ -34,7 +34,7 @@ const app = {
         },
         {
             id: 'payment',
-            icon: '💳',
+            icon: 'credit_card',
             title: 'Прием платежей',
             description: 'Онлайн-оплата через YooKassa, Stripe',
             price: 8000,
@@ -42,7 +42,7 @@ const app = {
         },
         {
             id: 'booking',
-            icon: '📅',
+            icon: 'event',
             title: 'Бронирование',
             description: 'Запись на услуги с календарем',
             price: 18000,
@@ -50,7 +50,7 @@ const app = {
         },
         {
             id: 'crm',
-            icon: '👥',
+            icon: 'groups',
             title: 'CRM интеграция',
             description: 'Синхронизация с вашей системой',
             price: 25000,
@@ -58,7 +58,7 @@ const app = {
         },
         {
             id: 'support',
-            icon: '💬',
+            icon: 'chat',
             title: 'Поддержка клиентов',
             description: 'Автоответы и передача оператору',
             price: 10000,
@@ -66,7 +66,7 @@ const app = {
         },
         {
             id: 'notifications',
-            icon: '🔔',
+            icon: 'notifications',
             title: 'Рассылки',
             description: 'Массовые и персональные уведомления',
             price: 7000,
@@ -74,7 +74,7 @@ const app = {
         },
         {
             id: 'analytics',
-            icon: '📊',
+            icon: 'analytics',
             title: 'Аналитика',
             description: 'Статистика продаж и поведения пользователей',
             price: 9000,
@@ -82,7 +82,7 @@ const app = {
         },
         {
             id: 'loyalty',
-            icon: '🎁',
+            icon: 'card_giftcard',
             title: 'Программа лояльности',
             description: 'Баллы, скидки и промокоды',
             price: 12000,
@@ -93,7 +93,7 @@ const app = {
     portfolio: [
         {
             title: 'Бот для ресторана',
-            image: '🍽️',
+            image: 'restaurant',
             category: 'Бронирование',
             metrics: {
                 orders: '500+/день',
@@ -105,7 +105,7 @@ const app = {
         },
         {
             title: 'Интернет-магазин одежды',
-            image: '👔',
+            image: 'store',
             category: 'E-commerce',
             metrics: {
                 revenue: '₽2.4M/мес',
@@ -117,7 +117,7 @@ const app = {
         },
         {
             title: 'Фитнес-клуб Premium',
-            image: '💪',
+            image: 'fitness_center',
             category: 'Услуги',
             metrics: {
                 clients: '800+',
@@ -129,7 +129,7 @@ const app = {
         },
         {
             title: 'Автосервис 24/7',
-            image: '🚗',
+            image: 'directions_car',
             category: 'Бронирование',
             metrics: {
                 bookings: '350/мес',
@@ -156,7 +156,9 @@ const app = {
         const topFeatures = this.features.slice(0, 6);
         grid.innerHTML = topFeatures.map(feature => `
             <div class="card">
-                <div class="card-icon">${feature.icon}</div>
+                <div class="card-icon">
+                    <span class="material-icons-round">${feature.icon}</span>
+                </div>
                 <h3 class="card-title">${feature.title}</h3>
                 <p class="card-description">${feature.description}</p>
                 <div style="margin-top: 16px; color: var(--primary); font-weight: 600;">
@@ -180,7 +182,9 @@ const app = {
                                     <input type="checkbox" class="feature-checkbox" value="${feature.id}">
                                     <div class="feature-content">
                                         <div class="feature-header">
-                                            <span class="feature-icon">${feature.icon}</span>
+                                            <span class="feature-icon">
+                                                <span class="material-icons-round">${feature.icon}</span>
+                                            </span>
                                             <div class="feature-info">
                                                 <div class="feature-title">${feature.title}</div>
                                                 <div class="feature-description">${feature.description}</div>
@@ -307,6 +311,18 @@ const app = {
                 .feature-icon {
                     font-size: 32px;
                     flex-shrink: 0;
+                    width: 48px;
+                    height: 48px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                    border-radius: 12px;
+                    color: white;
+                }
+                
+                .feature-icon .material-icons-round {
+                    font-size: 28px;
                 }
                 
                 .feature-info {
@@ -388,10 +404,14 @@ const app = {
         grid.innerHTML = this.portfolio.map(project => `
             <div class="card" style="padding: 0; overflow: hidden;">
                 <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 60px 32px; text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 16px;">${project.image}</div>
-                    <span style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                        ${project.category}
+                    <span class="material-icons-round" style="font-size: 64px; color: white; margin-bottom: 16px; display: inline-block;">
+                        ${project.image}
                     </span>
+                    <div>
+                        <span style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;">
+                            ${project.category}
+                        </span>
+                    </div>
                 </div>
                 <div style="padding: 24px;">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">${project.title}</h3>
