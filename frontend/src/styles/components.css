@@ -1,0 +1,50 @@
+/* Components - Buttons, Cards, Forms, Slider */
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+}
+
+.btn-secondary {
+    background: rgba(0, 136, 204, 0.1);
+    color: var(--primary-blue);
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 136, 204, 0.3);
+}
+
+/* Cards */
+.service-card, .portfolio-item, .review-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 136, 204, 0.1);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover, .portfolio-item:hover, .review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 136, 204, 0.15);
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    .service-card, .portfolio-item, .review-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}

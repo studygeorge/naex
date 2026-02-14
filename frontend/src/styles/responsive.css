@@ -1,0 +1,16 @@
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-stats {
+                gap: 32px;
+            }
+            
+            .services-grid,
+            .portfolio-grid,
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brief-content {
+                padding: 24px;
+            }
+        }

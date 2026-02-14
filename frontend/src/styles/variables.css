@@ -1,0 +1,26 @@
+/* CSS Variables and Theme Colors */
+:root {
+    --tg-theme-bg-color: #f8fafc;
+    --tg-theme-text-color: #1e293b;
+    --tg-theme-hint-color: #64748b;
+    --tg-theme-link-color: #0088cc;
+    --tg-theme-button-color: #0088cc;
+    --tg-theme-button-text-color: #ffffff;
+    
+    --primary-blue: #0088cc;
+    --secondary-blue: #229ED9;
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --bg-light: #f8fafc;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --tg-theme-bg-color: #141415;
+        --tg-theme-text-color: #ffffff;
+        --tg-theme-hint-color: #8E8E93;
+        --bg-light: #141415;
+        --text-dark: #ffffff;
+    }
+}
