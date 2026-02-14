@@ -7,13 +7,8 @@ import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
 import ContactsPage from './pages/ContactsPage';
 
-// Import styles
-import './styles/variables.css';
-import './styles/base.css';
-import './styles/layout.css';
-import './styles/components.css';
-import './styles/sections.css';
-import './styles/responsive.css';
+// Import all styles via main.css
+import './styles/main.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -61,9 +56,9 @@ function App() {
       
       <BottomNav currentPage={currentPage} onPageChange={handlePageChange} />
       
-      {/* Brief Modal - TODO */}
+      {/* Brief Modal */}
       {showBrief && (
-        <div className="brief-modal" onClick={handleCloseBrief}>
+        <div className="brief-modal active" onClick={handleCloseBrief}>
           <div className="brief-content" onClick={(e) => e.stopPropagation()}>
             <button className="brief-close" onClick={handleCloseBrief}>×</button>
             <h2>Обсудить проект</h2>
