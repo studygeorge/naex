@@ -45,16 +45,16 @@ function App() {
       <Header onOpenBrief={handleOpenBrief} />
       
       <main className="main-content">
-        <div className={`page ${currentPage === 'home' ? 'active' : ''}`}>
+        <div className={`page ${currentPage === 'home' ? 'active' : ''}`} id="page-home">
           <HomePage onOpenBrief={handleOpenBrief} onNavigate={handlePageChange} />
         </div>
-        <div className={`page ${currentPage === 'services' ? 'active' : ''}`}>
+        <div className={`page ${currentPage === 'services' ? 'active' : ''}`} id="page-services">
           <ServicesPage />
         </div>
-        <div className={`page ${currentPage === 'portfolio' ? 'active' : ''}`}>
+        <div className={`page ${currentPage === 'portfolio' ? 'active' : ''}`} id="page-portfolio">
           <PortfolioPage />
         </div>
-        <div className={`page ${currentPage === 'contacts' ? 'active' : ''}`}>
+        <div className={`page ${currentPage === 'contacts' ? 'active' : ''}`} id="page-contacts">
           <ContactsPage />
         </div>
       </main>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const HomePage = ({ onOpenBrief, onNavigate }) => {
   return (
-    <div className="page active" id="page-home">
+    <>
       {/* Hero Section */}
       <section className="hero" id="home">
         <div className="hero-content">
@@ -82,7 +82,7 @@ const HomePage = ({ onOpenBrief, onNavigate }) => {
           <span className="dot"></span>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

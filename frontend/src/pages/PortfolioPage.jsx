@@ -72,10 +72,9 @@ const PortfolioPage = () => {
   const currentPortfolio = activeCategory === 'tg' ? portfolioTG : portfolioWEB;
 
   return (
-    <div className="page" id="page-portfolio">
-      <section className="section" id="portfolio">
-        {/* Portfolio Switcher */}
-        <div className="portfolio-switcher">
+    <section className="section" id="portfolio">
+      {/* Portfolio Switcher */}
+      <div className="portfolio-switcher">
           <div className="switcher-container">
             <button 
               className={`switcher-btn ${activeCategory === 'tg' ? 'active' : ''}`}
@@ -134,7 +133,6 @@ const PortfolioPage = () => {
           </div>
         </div>
       </section>
-    </div>
   );
 };
 
