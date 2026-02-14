@@ -103,6 +103,8 @@
     padding: 0 20px;
     z-index: 100;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    /* КРИТИЧНО для правильного позиционирования active-bg */
+    position: fixed;
 }
 
 .nav-item {
@@ -110,6 +112,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 4px;
     padding: 10px;
     cursor: pointer;
@@ -121,6 +124,8 @@
     z-index: 2;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    /* Фиксированная минимальная ширина */
+    min-width: 60px;
 }
 
 .nav-item .material-icons-round {
@@ -139,6 +144,12 @@
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 1;
     box-shadow: 0 4px 12px rgba(0, 136, 204, 0.15);
+    /* КРИТИЧНО: начальная позиция */
+    top: 10px;
+    left: 0;
+    width: 0;
+    /* Prevent layout shift */
+    will-change: left, width;
 }
 
 /* Dark theme */

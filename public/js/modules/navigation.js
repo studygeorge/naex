@@ -83,10 +83,21 @@ export function initNavigation() {
         });
     });
     
+    // КРИТИЧНО: Инициализируем активный фон при загрузке
     const activeItem = document.querySelector('.nav-item.active');
     if (activeItem) {
+        const section = activeItem.getAttribute('data-section') || 'home';
+        updateActiveNav(section);
+    } else {
+        // Если нет активного элемента, активируем home
         updateActiveNav('home');
     }
+    
+    // Дополнительное обновление после рендера
+    setTimeout(() => {
+        const section = document.querySelector('.nav-item.active')?.getAttribute('data-section') || 'home';
+        updateActiveNav(section);
+    }, 100);
 }
 
 // Make functions available globally for inline handlers
