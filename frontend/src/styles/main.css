@@ -1,7 +1,22 @@
 /* Main CSS - imports all stylesheets */
+
+/* 1. Переменные (должны быть первыми) */
 @import url('./variables.css');
+
+/* 2. Базовые стили (body, html, *, ::before, ::after) */
 @import url('./base.css');
+
+/* 3. Лейауты (страницы, контейнеры) */
 @import url('./layout.css');
+
+/* 4. Общие компоненты (кнопки, карточки, формы) */
 @import url('./components.css');
+
+/* 5. Общие секции (hero, section, portfolio, reviews) */
 @import url('./sections.css');
+
+/* 6. ⚠️ СПЕЦИФИЧНЫЕ СТИЛИ SERVICES - ДОЛЖНЫ БЫТЬ ПОСЛЕДНИМИ! */
+@import url('./services.css');
+
+/* 7. Адаптивные медиа-запросы (последние, чтобы перекрыть все) */
 @import url('./responsive.css');

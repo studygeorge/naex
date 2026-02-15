@@ -14,6 +14,8 @@ const BottomNav = ({ currentPage, onPageChange }) => {
 
   useEffect(() => {
     updateActiveBackground();
+    window.addEventListener('resize', updateActiveBackground);
+    return () => window.removeEventListener('resize', updateActiveBackground);
   }, [currentPage]);
 
   const updateActiveBackground = () => {
@@ -27,11 +29,12 @@ const BottomNav = ({ currentPage, onPageChange }) => {
 
     const containerRect = bottomNav.getBoundingClientRect();
     const itemRect = activeItem.getBoundingClientRect();
-    const leftOffset = itemRect.left - containerRect.left;
-    const padding = 4;
 
-    activeBg.style.left = `${leftOffset + padding}px`;
-    activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
+    const leftPosition = itemRect.left - containerRect.left;
+    const itemWidth = itemRect.width;
+
+    activeBg.style.left = `${leftPosition}px`;
+    activeBg.style.width = `${itemWidth}px`;
   };
 
   const handleClick = (pageId) => {
@@ -50,7 +53,7 @@ const BottomNav = ({ currentPage, onPageChange }) => {
           onClick={() => handleClick(item.id)}
         >
           <span className="material-icons-round">{item.icon}</span>
-          <span>{item.label}</span>
+          <span className="nav-label">{item.label}</span>
         </div>
       ))}
     </nav>

@@ -1,0 +1,154 @@
+/* ===============================================
+   STUDIO ROTATING BANNER
+   =============================================== */
+
+.studio-rotating-banner {
+  width: 100%;
+  background: transparent !important; /* ✅ Прозрачный фон */
+  background-color: transparent !important;
+  background-image: none !important;
+  padding: 60px 24px;
+  overflow: visible; /* ✅ Было: hidden */
+  position: relative;
+}
+
+.rotating-banner-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.rotating-banner-heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: clamp(40px, 7vw, 96px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+
+.fixed-word {
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+}
+
+.rotating-word-box {
+  display: inline-flex;
+  background: linear-gradient(135deg, #0088cc 0%, #229ED9 100%);
+  padding: 8px 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 136, 204, 0.6);
+  position: relative;
+  overflow: hidden;
+  min-width: 280px;
+  justify-content: center;
+}
+
+.rotating-word-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.rotating-banner-text {
+  color: #ffffff !important;
+  font-size: inherit !important;
+  font-weight: 900 !important;
+  letter-spacing: inherit !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  position: relative;
+  z-index: 2;
+}
+
+.rotating-banner-word {
+  overflow: hidden !important;
+  padding-bottom: 4px !important;
+}
+
+.rotating-banner-char {
+  display: inline-block !important;
+  font-weight: 900 !important;
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+  .studio-rotating-banner {
+    padding: 50px 20px;
+  }
+
+  .rotating-banner-heading {
+    gap: 16px;
+  }
+
+  .rotating-word-box {
+    padding: 6px 24px;
+    border-radius: 14px;
+    min-width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .studio-rotating-banner {
+    padding: 40px 20px;
+  }
+
+  .rotating-banner-heading {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .rotating-word-box {
+    padding: 6px 20px;
+    border-radius: 12px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .studio-rotating-banner {
+    padding: 32px 16px;
+  }
+
+  .rotating-banner-heading {
+    gap: 10px;
+  }
+
+  .rotating-word-box {
+    padding: 4px 16px;
+    border-radius: 10px;
+    min-width: 160px;
+  }
+
+  .rotating-banner-word {
+    padding-bottom: 2px !important;
+  }
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-rotating-banner {
+  animation: fadeIn 0.8s ease-out;
+}

@@ -1,6 +1,21 @@
 /* Layout Styles - Header, Navigation, Page System */
 
-/* Fixed Header */
+/* ===============================================
+   APP CONTAINER
+   =============================================== */
+
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: transparent !important;
+    overflow: hidden; /* Prevent horizontal scroll */
+}
+
+/* ===============================================
+   FIXED HEADER
+   =============================================== */
+
 .header {
     position: fixed;
     top: 0;
@@ -44,12 +59,22 @@
     box-shadow: 0 8px 20px rgba(0, 136, 204, 0.3);
 }
 
-/* Main Content */
+/* ===============================================
+   MAIN CONTENT AREA
+   =============================================== */
+
 .main-content {
-    /* Страницы теперь fixed, margin не нужен */
+    flex: 1;
+    position: relative;
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
 }
 
-/* Page System - независимый scroll для каждой страницы */
+/* ===============================================
+   PAGE SYSTEM - FIXED WITH INDEPENDENT SCROLL
+   =============================================== */
+
 .page {
     position: fixed;
     top: 60px;
@@ -57,7 +82,7 @@
     right: 0;
     bottom: 80px;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: auto; /* ✅ ВАЖНО: должен быть auto */
     -webkit-overflow-scrolling: touch;
     opacity: 0;
     visibility: hidden;
@@ -65,17 +90,17 @@
     z-index: 1;
     transform: translateZ(0);
     will-change: opacity, visibility;
-    padding-bottom: 40px;
+    background: transparent !important;
 }
 
 .page.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    animation: fadeIn 0.3s ease;
+    animation: fadeInPage 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInPage {
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -86,82 +111,120 @@
     }
 }
 
-/* Bottom Navigation */
+/* ✅ Services Page - КРИТИЧНЫЕ ПРАВИЛА */
+#page-services {
+    padding: 0 !important;
+    background: #000000 !important;
+    overflow-y: scroll !important; /* ✅ ВАЖНО: принудительный скролл */
+    overflow-x: hidden !important;
+}
+
+/* Остальные страницы */
+#page-home,
+#page-portfolio,
+#page-contacts {
+    padding-bottom: 40px;
+}
+
+/* ===============================================
+   BOTTOM NAVIGATION
+   =============================================== */
+
 .bottom-nav {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 400px;
+    width: calc(100% - 48px);
+    height: 68px;
     background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(0, 136, 204, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 34px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08),
+                0 0 0 0.5px rgba(255, 255, 255, 0.5) inset;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0 20px;
-    z-index: 100;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-    /* КРИТИЧНО для правильного позиционирования active-bg */
-    position: fixed;
+    padding: 10px;
+    gap: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .nav-item {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 10px;
+    gap: 2px;
+    color: #8E8E93;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 24px;
     cursor: pointer;
-    color: var(--text-gray);
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.3s ease;
     position: relative;
+    flex: 1;
+    min-width: 0;
     z-index: 2;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
-    /* Фиксированная минимальная ширина */
-    min-width: 60px;
-}
-
-.nav-item .material-icons-round {
-    font-size: 24px;
+    -webkit-user-select: none;
 }
 
 .nav-item.active {
     color: var(--primary-blue);
 }
 
-.nav-active-bg {
-    position: absolute;
-    height: 60px;
-    background: white;
-    border-radius: 16px;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    z-index: 1;
-    box-shadow: 0 4px 12px rgba(0, 136, 204, 0.15);
-    /* КРИТИЧНО: начальная позиция */
-    top: 10px;
-    left: 0;
-    width: 0;
-    /* Prevent layout shift */
-    will-change: left, width;
+.nav-item span.material-icons-round {
+    font-size: 24px;
+    transition: all 0.3s ease;
 }
 
-/* Dark theme */
+.nav-item.active span.material-icons-round {
+    transform: scale(1.05);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+/* Active indicator background */
+.nav-active-bg {
+    position: absolute;
+    height: 48px;
+    background: rgba(0, 136, 204, 0.12);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ===============================================
+   DARK THEME
+   =============================================== */
+
 @media (prefers-color-scheme: dark) {
     .header {
-        background: rgba(20, 20, 21, 0.9);
+        background: rgba(28, 28, 30, 0.9);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .bottom-nav {
-        background: rgba(20, 20, 21, 0.9);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(28, 28, 30, 0.8);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3),
+                    0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
+    }
+    
+    .nav-item {
+        color: #98989E;
     }
     
     .nav-item.active {
@@ -170,6 +233,59 @@
     
     .nav-active-bg {
         background: rgba(10, 132, 255, 0.15);
-        box-shadow: none;
+    }
+}
+
+/* ===============================================
+   MOBILE OPTIMIZATIONS
+   =============================================== */
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0 16px;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+    
+    .header-cta {
+        font-size: 13px;
+        padding: 8px 16px;
+    }
+    
+    .bottom-nav {
+        width: calc(100% - 32px);
+        bottom: 12px;
+    }
+    
+    /* ✅ Мобильный скролл */
+    .page {
+        overflow-y: scroll !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 0 12px;
+    }
+    
+    .logo {
+        font-size: 16px;
+    }
+    
+    .header-cta {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .bottom-nav {
+        width: calc(100% - 24px);
+        bottom: 8px;
+        height: 64px;
+    }
+    
+    .nav-label {
+        font-size: 9px;
     }
 }

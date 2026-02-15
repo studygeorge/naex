@@ -1,26 +1,38 @@
 import React from 'react';
 
+// Импорт компонентов
+import Iridescence from '../components/ui/Iridescence';
+import ServicesHero from '../components/services/ServicesHero';
+import StudioRotatingBanner from '../components/services/StudioRotatingBanner';
+import ServicesStack from '../components/services/ServicesStack';
+import WhatWeDo from '../components/services/WhatWeDo';
+import CasesSection from '../components/services/CasesSection'; // ✅ НОВЫЙ РАЗДЕЛ
+
+// Импорт стилей
+import '../styles/services/services-page.css';
+
 const ServicesPage = () => {
   return (
-    <section className="section">
-      <h2 className="section-title">Наши услуги</h2>
-      <p className="section-subtitle">Комплексные решения для вашего бизнеса</p>
-      
-      <div className="services-grid">
-        <div className="service-card">
-          <h3>Telegram боты</h3>
-          <p>Разработка ботов для автоматизации бизнес-процессов</p>
-        </div>
-        <div className="service-card">
-          <h3>Mini Apps</h3>
-          <p>Мини-приложения в Telegram для вашего бизнеса</p>
-        </div>
-        <div className="service-card">
-          <h3>Веб-разработка</h3>
-          <p>Создание современных веб-сайтов и приложений</p>
-        </div>
+    <div className="services-page">
+      {/* ✅ Единый фиксированный фон Iridescence */}
+      <div className="services-page-background">
+        <Iridescence
+          color={[0.0, 0.5, 0.7]}
+          speed={0.6}
+          amplitude={0.2}
+          mouseReact={true}
+        />
       </div>
-    </section>
+
+      {/* ✅ Контент поверх фона */}
+      <div className="services-page-content">
+        <ServicesHero />
+        <StudioRotatingBanner />
+        <ServicesStack />
+        <WhatWeDo /> {/* 4-й раздел */}
+        <CasesSection /> {/* ✅ 5-й раздел - КЕЙСЫ */}
+      </div>
+    </div>
   );
 };
 

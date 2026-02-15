@@ -42,25 +42,30 @@ export function updateActiveNav(pageName) {
     const activeBg = document.querySelector('.nav-active-bg');
     const bottomNav = document.querySelector('.bottom-nav');
     
-    if (!activeBg || !bottomNav) return;
+    if (!activeBg || !bottomNav || navItems.length === 0) return;
     
-    navItems.forEach((item, index) => {
+    let targetItem = null;
+    
+    navItems.forEach((item) => {
         const section = item.getAttribute('data-section');
         
         if (section === pageName) {
             item.classList.add('active');
-            
-            const containerRect = bottomNav.getBoundingClientRect();
-            const itemRect = item.getBoundingClientRect();
-            const leftOffset = itemRect.left - containerRect.left;
-            const padding = 4;
-            
-            activeBg.style.left = `${leftOffset + padding}px`;
-            activeBg.style.width = `${itemRect.width - (padding * 2)}px`;
+            targetItem = item;
         } else {
             item.classList.remove('active');
         }
     });
+    
+    if (!targetItem) return;
+    
+    // Используем offsetLeft и offsetWidth для точного расчёта
+    const itemLeft = targetItem.offsetLeft;
+    const itemWidth = targetItem.offsetWidth;
+    const padding = 8;
+    
+    activeBg.style.left = `${itemLeft + padding}px`;
+    activeBg.style.width = `${itemWidth - (padding * 2)}px`;
 }
 
 // Initialize navigation
@@ -83,21 +88,26 @@ export function initNavigation() {
         });
     });
     
-    // КРИТИЧНО: Инициализируем активный фон при загрузке
+    // Инициализируем активный фон при загрузке
     const activeItem = document.querySelector('.nav-item.active');
     if (activeItem) {
         const section = activeItem.getAttribute('data-section') || 'home';
         updateActiveNav(section);
     } else {
-        // Если нет активного элемента, активируем home
         updateActiveNav('home');
     }
     
-    // Дополнительное обновление после рендера
+    // Дополнительное обновление после полного рендера
     setTimeout(() => {
         const section = document.querySelector('.nav-item.active')?.getAttribute('data-section') || 'home';
         updateActiveNav(section);
     }, 100);
+    
+    // Пересчитываем позицию при изменении размера окна
+    window.addEventListener('resize', () => {
+        const section = document.querySelector('.nav-item.active')?.getAttribute('data-section') || currentPage;
+        updateActiveNav(section);
+    });
 }
 
 // Make functions available globally for inline handlers

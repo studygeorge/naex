@@ -195,187 +195,211 @@
         
         <!-- Page: Portfolio -->
         <div id="page-portfolio" class="page">
-        <!-- Portfolio Section -->
-        <section class="section" id="portfolio">
-            <!-- Portfolio Switcher -->
-            <div class="portfolio-switcher">
-                <div class="switcher-container">
-                    <button class="switcher-btn active" data-category="tg">TG</button>
-                    <button class="switcher-btn" data-category="web">WEB</button>
+            <!-- Portfolio Section -->
+            <section class="section" id="portfolio">
+                <!-- Portfolio Switcher -->
+                <div class="portfolio-switcher">
+                    <div class="switcher-container">
+                        <button class="switcher-btn active" data-category="tg">TG</button>
+                        <button class="switcher-btn" data-category="web">WEB</button>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- TG Portfolio -->
-            <div id="portfolio-tg" class="portfolio-category-section active">
-                <p class="portfolio-description">
-                    Telegram-боты и мини-приложения для автоматизации бизнеса и улучшения клиентского опыта
-                </p>
                 
-                <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            🛍️
-                        </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">Mini App</div>
-                                <h3>Онлайн-магазин косметики</h3>
-                            </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">127%</div>
-                                    <div class="metric-label">Рост продаж</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-value">8.4%</div>
-                                    <div class="metric-label">Конверсия</div>
-                                </div>
-                            </div>
-                                <p>Интеграция каталога товаров с возможностью оплаты через Telegram Payments и автоматическим уведомлением о заказах.</p>
-                            </div>
-                        </div>
-                    </div>
+                <!-- TG Portfolio -->
+                <div id="portfolio-tg" class="portfolio-category-section active">
+                    <p class="portfolio-description">
+                        Telegram-боты и мини-приложения для автоматизации бизнеса и улучшения клиентского опыта
+                    </p>
                     
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            🦷
+                    <div class="portfolio-grid">
+                        <!-- Project 1: Cosmetics Shop -->
+                        <div class="portfolio-item" onclick="openProject('cosmetics-shop')">
+                            <div class="portfolio-image">
+                                <img src="/images/portfolio/cosmetics-shop/cover.jpg" alt="Онлайн-магазин косметики" onerror="this.parentElement.innerHTML='🛍️'">
+                            </div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">Mini App</div>
+                                    <h3>Онлайн-магазин косметики</h3>
+                                </div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">127%</div>
+                                            <div class="metric-label">Рост продаж</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">8.4%</div>
+                                            <div class="metric-label">Конверсия</div>
+                                        </div>
+                                    </div>
+                                    <p>Интеграция каталога товаров с возможностью оплаты через Telegram Payments и автоматическим уведомлением о заказах.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">Telegram Bot</div>
-                                <h3>CRM для стоматологии</h3>
+                        
+                        <!-- Project 2: Dental CRM -->
+                        <div class="portfolio-item" onclick="openProject('dental-crm')">
+                            <div class="portfolio-image">
+                                <img src="/images/portfolio/dental-crm/cover.jpg" alt="CRM для стоматологии" onerror="this.parentElement.innerHTML='🦷'">
                             </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">-40%</div>
-                                    <div class="metric-label">Время записи</div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">Telegram Bot</div>
+                                    <h3>CRM для стоматологии</h3>
                                 </div>
-                                <div class="metric">
-                                    <div class="metric-value">350+</div>
-                                    <div class="metric-label">Записей/мес</div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">-40%</div>
+                                            <div class="metric-label">Время записи</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">350+</div>
+                                            <div class="metric-label">Записей/мес</div>
+                                        </div>
+                                    </div>
+                                    <p>Автоматизация записи пациентов, напоминания о приемах, интеграция с 1С и онлайн-оплата услуг.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
                                 </div>
-                            </div>
-                                <p>Автоматизация записи пациентов, напоминания о приемах, интеграция с 1С и онлайн-оплата услуг.</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            🎪
-                        </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">Mini App + Bot</div>
-                                <h3>Система для мероприятий</h3>
+                        
+                        <!-- Project 3: Event System -->
+                        <div class="portfolio-item" onclick="openProject('event-system')">
+                            <div class="portfolio-image">
+                                🎪
                             </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">2500+</div>
-                                    <div class="metric-label">Участников</div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">Mini App + Bot</div>
+                                    <h3>Система для мероприятий</h3>
                                 </div>
-                                <div class="metric">
-                                    <div class="metric-value">98%</div>
-                                    <div class="metric-label">Довольны</div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">2500+</div>
+                                            <div class="metric-label">Участников</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">98%</div>
+                                            <div class="metric-label">Довольны</div>
+                                        </div>
+                                    </div>
+                                    <p>Регистрация, нетворкинг, расписание, навигация по площадке и геймификация для вовлечения гостей.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
                                 </div>
-                            </div>
-                                <p>Регистрация, нетворкинг, расписание, навигация по площадке и геймификация для вовлечения гостей.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- WEB Portfolio -->
-            <div id="portfolio-web" class="portfolio-category-section">
-                <p class="portfolio-description">
-                    Современные веб-сайты и приложения с адаптивным дизайном и быстрой загрузкой
-                </p>
                 
-                <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            🏢
-                        </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">Корпоративный сайт</div>
-                                <h3>Сайт IT-компании</h3>
-                            </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">3x</div>
-                                    <div class="metric-label">Рост трафика</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-value">95+</div>
-                                    <div class="metric-label">PageSpeed</div>
-                                </div>
-                            </div>
-                                <p>Современный корпоративный сайт с адаптивным дизайном, анимациями и интеграцией CRM.</p>
-                            </div>
-                        </div>
-                    </div>
+                <!-- WEB Portfolio -->
+                <div id="portfolio-web" class="portfolio-category-section">
+                    <p class="portfolio-description">
+                        Современные веб-сайты и приложения с адаптивным дизайном и быстрой загрузкой
+                    </p>
                     
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            🛒
+                    <div class="portfolio-grid">
+                        <div class="portfolio-item" onclick="openProject('it-company')">
+                            <div class="portfolio-image">
+                                🏢
+                            </div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">Корпоративный сайт</div>
+                                    <h3>Сайт IT-компании</h3>
+                                </div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">3x</div>
+                                            <div class="metric-label">Рост трафика</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">95+</div>
+                                            <div class="metric-label">PageSpeed</div>
+                                        </div>
+                                    </div>
+                                    <p>Современный корпоративный сайт с адаптивным дизайном, анимациями и интеграцией CRM.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">E-commerce</div>
-                                <h3>Интернет-магазин электроники</h3>
+                        
+                        <div class="portfolio-item" onclick="openProject('ecommerce')">
+                            <div class="portfolio-image">
+                                🛒
                             </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">12.5%</div>
-                                    <div class="metric-label">Конверсия</div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">E-commerce</div>
+                                    <h3>Интернет-магазин электроники</h3>
                                 </div>
-                                <div class="metric">
-                                    <div class="metric-value">180%</div>
-                                    <div class="metric-label">Рост заказов</div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">12.5%</div>
+                                            <div class="metric-label">Конверсия</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">180%</div>
+                                            <div class="metric-label">Рост заказов</div>
+                                        </div>
+                                    </div>
+                                    <p>Полнофункциональный интернет-магазин с каталогом, корзиной, личным кабинетом и интеграцией оплаты.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
                                 </div>
-                            </div>
-                                <p>Полнофункциональный интернет-магазин с каталогом, корзиной, личным кабинетом и интеграцией оплаты.</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            📱
-                        </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-header">
-                                <div class="portfolio-category">Web App</div>
-                                <h3>Сервис онлайн-бронирования</h3>
+                        
+                        <div class="portfolio-item" onclick="openProject('booking-app')">
+                            <div class="portfolio-image">
+                                📱
                             </div>
-                            <div class="portfolio-body">
-                            <div class="portfolio-metrics">
-                                <div class="metric">
-                                    <div class="metric-value">5000+</div>
-                                    <div class="metric-label">Бронирований</div>
+                            <div class="portfolio-content">
+                                <div class="portfolio-header">
+                                    <div class="portfolio-category">Web App</div>
+                                    <h3>Сервис онлайн-бронирования</h3>
                                 </div>
-                                <div class="metric">
-                                    <div class="metric-value">4.8</div>
-                                    <div class="metric-label">Рейтинг</div>
+                                <div class="portfolio-body">
+                                    <div class="portfolio-metrics">
+                                        <div class="metric">
+                                            <div class="metric-value">5000+</div>
+                                            <div class="metric-label">Бронирований</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-value">4.8</div>
+                                            <div class="metric-label">Рейтинг</div>
+                                        </div>
+                                    </div>
+                                    <p>PWA приложение для бронирования услуг с календарем, онлайн-оплатой и уведомлениями.</p>
+                                    <a class="portfolio-read-more">
+                                        Подробнее
+                                        <span class="material-icons-round">arrow_forward</span>
+                                    </a>
                                 </div>
-                            </div>
-                                <p>PWA приложение для бронирования услуг с календарем, онлайн-оплатой и уведомлениями.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
         <!-- End Page: Portfolio -->
         
@@ -479,6 +503,22 @@
             <span class="nav-label">Контакты</span>
         </a>
     </nav>
+    
+    <!-- Project Detail Modal - НОВОЕ -->
+    <div class="project-modal" id="projectModal">
+        <div class="project-modal-header">
+            <button class="project-back-btn" onclick="closeProject()">
+                <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h2 class="project-modal-title" id="projectModalTitle"></h2>
+        </div>
+        
+        <div class="project-modal-content">
+            <div class="project-modal-body" id="projectModalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
     
     <!-- Brief Modal -->
     <div class="brief-modal" id="briefModal">

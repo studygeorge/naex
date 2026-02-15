@@ -1,0 +1,54 @@
+/* Service Component Styles */
+
+.service-component {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  padding: 80px 24px;
+  position: relative;
+}
+
+.component-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.component-title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+  margin: 0;
+  animation: titleFadeIn 1s ease-out;
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .service-component {
+    padding: 60px 20px;
+    min-height: 80vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-component {
+    padding: 40px 16px;
+    min-height: 70vh;
+  }
+}

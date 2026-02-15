@@ -72,6 +72,13 @@
     position: relative;
 }
 
+/* Services Page Modal Transparency */
+.services-page .brief-content {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .brief-close {
     position: absolute;
     top: 20px;
@@ -238,6 +245,13 @@
     .brief-content {
         background: #1c1c1e;
         border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Services Page Modal Dark Theme */
+    .services-page .brief-content {
+        background: rgba(28, 28, 30, 0.95) !important;
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .brief-close {

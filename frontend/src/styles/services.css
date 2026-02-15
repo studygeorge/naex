@@ -1,0 +1,112 @@
+/* Services Page Styles */
+
+.services-page {
+  width: 100%;
+  min-height: 100vh;
+  overflow: visible !important;
+  position: relative;
+}
+
+/* КРИТИЧНО: убираем скролл со всех дочерних элементов */
+.services-page > *,
+.services-page section,
+.services-page div {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Прогресс-бар */
+.exploration-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0088cc, #229ED9);
+  box-shadow: 0 0 10px rgba(0, 136, 204, 0.5);
+  transition: width 0.15s ease-out;
+  will-change: width;
+}
+
+.points-counter {
+  position: fixed;
+  top: 76px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.points-icon-img {
+  width: 20px;
+  height: 20px;
+}
+
+.points-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0088cc;
+}
+
+/* Анимация появления */
+.fade-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  .services-page {
+    background: #000;
+  }
+
+  .exploration-progress {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .points-counter {
+    background: rgba(28, 28, 30, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .points-value {
+    color: #0A84FF;
+  }
+}
+
+@media (max-width: 768px) {
+  .points-counter {
+    top: 72px;
+    right: 12px;
+    padding: 6px 12px;
+  }
+
+  .points-icon-img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .points-value {
+    font-size: 14px;
+  }
+}

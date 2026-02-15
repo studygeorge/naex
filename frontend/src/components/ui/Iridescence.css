@@ -1,0 +1,17 @@
+.iridescence-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 400vh; /* ✅ Покрывает 3 экрана (или больше) */
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.iridescence-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover; /* ✅ Растягивает без искажений */
+}
